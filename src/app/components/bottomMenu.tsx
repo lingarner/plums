@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faList, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faList, faCog, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function BottomMenu() {
@@ -16,7 +16,7 @@ export default function BottomMenu() {
           </li>
           <li className="relative">
             <button className="absolute bottom-1/2 shadow-lg shadow-purple-500/50 left-1/2 transform -translate-x-1/2 bg-buttonColor text-yellow-500 h-14 w-14 rounded-xl">
-              <p className='text-3xl '>+</p>
+              <FontAwesomeIcon className = "text-2xl"icon={faPlus} />
             </button>
           </li>
           <li>
