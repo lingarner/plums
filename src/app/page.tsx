@@ -22,7 +22,7 @@ function Home() {
   }, []);
 
   return (
-    <main className="bg-gray-100">
+    <main>
       {isSmallScreen? <BottomMenu /> : <SideMenu/>}
       <Attachment/>
     </main>
