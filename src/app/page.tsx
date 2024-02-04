@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import BottomMenu from "./components/bottomMenu";
 import SideMenu from "./components/sideMenu";
+import Attachment from "./components/attachment";
 
 function Home() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -23,6 +24,7 @@ function Home() {
   return (
     <main className="bg-gray-100">
       {isSmallScreen? <BottomMenu /> : <SideMenu/>}
+      <Attachment/>
     </main>
   );
 }
