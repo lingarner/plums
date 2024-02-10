@@ -23,7 +23,7 @@ export default function SideMenu() {
           <Link href="/" className="flex items-center">
             <>
               <FontAwesomeIcon icon={faSearch} className="text-xl mr-2" />
-              <p className='text-md'>Search</p>
+              <input placeholder='Search' className='text-md bg-transparent outline-none focus:border-darkPlum'/>
             </>
           </Link>
         </li>

@@ -15,11 +15,7 @@ export default function BottomMenu() {
             <FontAwesomeIcon icon={faList} className="text-darkPlum text-3xl fill-current" />
             </Link>
           </li>
-          <li className="relative">
-            <div className="absolute bottom-1/2  left-1/2 transform   -translate-x-1/2">
-            <AddButton/>
-            </div>
-          </li>
+          
           <li>
             <Link className="hover:text-gray-300 p-16" href="/">
                 <FontAwesomeIcon icon={faCog}  className="text-darkPlum text-3xl"  />

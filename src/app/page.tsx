@@ -4,9 +4,12 @@ import Image from "next/image";
 import BottomMenu from "./components/bottomMenu";
 import SideMenu from "./components/sideMenu";
 import AddButton from "./components/addButton";
-import Topic from "./components/topic";
+import TopicCarousel from "./components/topicCarosel";
+import './globals.css';
+import TopicList from "./components/topicList";
 
 function Home() {
+  const topics = ['Math', 'Science', 'English', 'History', 'Geography', 'Art'];
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
@@ -21,23 +24,29 @@ function Home() {
   }, []);
 
   return (
-    <main className="relative">
+    <main className="">
       {isSmallScreen ? (
+        <>
+        <TopicList topics={topics}/>
         <BottomMenu />
+       
+        <AddButton  styles ='fixed  bottom-14 left-1/2 transform -translate-x-1/2'page = "home" />
+      
+        </>
       ) : (
         <>
           <SideMenu />
-          <div className="absolute bottom-7 right-1 transform -translate-x-1/2">
-            <AddButton />
+          <div className="absolute left-56 top-20 md:w-3/4  m-8">
+          <TopicCarousel title="Study Topics" topics={topics}/>
+          <TopicCarousel title="Pinned" topics={topics}/>
           </div>
+    
+          <AddButton styles='fixed  bottom-3 right-1 transform -translate-x-1/2'page = "home"/>
+   
         </>
       )}
-      <div className="flex justify-center items-center sm:absolute sm:left-1/4 sm:top-24 lg:m-0">
-        <div>
-          <h2 className="text-lg font-semibold text-darkPlum">Study Topics</h2>
-          <Topic topic="Topic" />
-        </div>
-      </div>
+
+      
     </main>
   );
 }
