@@ -25,7 +25,7 @@ function CurrentDateTime(): JSX.Element {
   };
 
   return (
-    <div className='text-right fixed top-0 right-2 p-5 text-darkPlum font-semibold text-lg'>
+    <div className='text-right fixed top-0 right-2 p-5 text-darkPlum font-semibold text-md'>
       <p>{formatDate(currentDateTime)}</p>
       <p>{formatTime(currentDateTime)}</p>
     </div>
