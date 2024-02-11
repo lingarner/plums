@@ -7,6 +7,7 @@ import AddButton from "./components/addButton";
 import TopicCarousel from "./components/topicCarosel";
 import './globals.css';
 import TopicList from "./components/topicList";
+import HeaderMobile from "./components/headerMoblie";
 
 function Home() {
   const topics = ['Math', 'Science', 'English', 'History', 'Geography', 'Art'];
@@ -27,6 +28,7 @@ function Home() {
     <main className="">
       {isSmallScreen ? (
         <>
+        <HeaderMobile/>
         <TopicList topics={topics}/>
         <BottomMenu />
        
