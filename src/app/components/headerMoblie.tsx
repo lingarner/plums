@@ -11,14 +11,14 @@ export default function HeaderMoblie() {
   return (
     <>
     <div>
-      <div className="flex items-center space-x-4 w-full mt-5">
+      <div className="flex items-center space-x-4 w-full mt-5 ml-5">
         <Image src={PlumLogo} alt="Plum Logo" className="w-20" />
-        <h1 className="text-xl font-bold text-darkPlum ml-2">Plum Learning</h1>
+        <h1 className="text-xl font-bold text-darkPlum ml-2 max-w-[100px]">Plum Learning</h1>
         <div className="my-4 hover:text-buttonColor">
           <Link href="/" className="flex items-center">
             <>
               <FontAwesomeIcon icon={faSearch} className="text-xl mr-2" />
-              <input placeholder='Search' className='text-md bg-transparent outline-none focus:border-darkPlum'/>
+              <input placeholder='Search' className='text-md bg-transparent outline-none focus:border-darkPlum max-w-'/>
             </>
           </Link>
         </div>
