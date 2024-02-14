@@ -1,49 +1,61 @@
 'use client';
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import BottomMenu from "../components/bottomMenu";
-import SideMenu from "../components/sideMenu";
+import HeaderMobile from "../components/headerMoblie";
+import SideMenu from "../components/Menu";
 import AddButton from "../components/addButton";
-import Topic from "../components/topic";
+import AttachmentCarousel from "../components/attachmentCarousel";
+import { Attachment } from "../types";
 
 
 function Home() {
+  const topics = ['Math', 'Science', 'English', 'History', 'Geography', 'Art'];
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  useEffect(() => {
+  const convertToTopics = (topics: string[]): Attachment[] => {
+    return topics.map(topic => ({
+      name: topic,
+      file: `This is the description for ${topic}`,
+      pinned: false, 
+    }));
+  
+  
+  };
+  const topicObjects: Attachment[] = convertToTopics(topics);
 
-    const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth < 500);
-    };
-
-    window.addEventListener("resize", checkScreenSize);
-    
-    checkScreenSize();
-
-    return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
 
   return (
-    <main>
-      {isSmallScreen? 
-
-      <BottomMenu /> 
-      : 
+    <main className="">
+    <div className="sm:hidden">
       <>
-        <SideMenu/>
-        <div className="absolute bottom-7  right-1 transform -translate-x-1/2">
-        <AddButton/>
-        <div></div>
-        </div>
+      <HeaderMobile/>
+      <h1 className="text-2xl font-semibold text-darkPlum mb-4 pt-6">Topic Name</h1>
+      <AttachmentCarousel title="Pinned" attachments={topicObjects}/>
+      <AttachmentCarousel title="Attachments" attachments={topicObjects}/>
+      <AttachmentCarousel title="Notebook" attachments={topicObjects}/>
+      
+      <AddButton page = "topic"/>
       </>
-      }
-      <div className="absolute left-1/4 top-20">
-        <Topic/>
       </div>
-      
-      
-      
-    </main>
+
+    <div className="hidden sm:block">
+      <div>
+        <div className="flex">
+        <SideMenu />
+        <div className=" md:w-3/4  m-16 my-16">
+
+        <AttachmentCarousel title="Pinned" attachments={topicObjects}/>
+        <AttachmentCarousel title="Attachments" attachments={topicObjects}/>
+        <AttachmentCarousel title="Notebook" attachments={topicObjects}/>
+        </div>
+  
+        <AddButton page = "topic"/>
+        </div>
+      </div>
+    </div>
+
+    
+  </main>
   );
 }
 

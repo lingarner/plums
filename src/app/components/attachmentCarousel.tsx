@@ -4,9 +4,10 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import TopicCard from './topic';
-import { Topic } from '../types';
+import { Attachment } from '../types';
+import AttachmentCard from './attachmentCard';
 
-const TopicCarousel = ({title,topics} : {title:string,topics: Topic[]}) => {
+const AttachmentCarousel = ({title,attachments} : {title:string,attachments: Attachment[]}) => {
 
 
   const settings = {
@@ -45,9 +46,9 @@ const TopicCarousel = ({title,topics} : {title:string,topics: Topic[]}) => {
     <div >
       <h2 className="text-lg font-semibold text-darkPlum mb-4">{title}</h2>
       <Slider {...settings}>
-        {topics.map((topic, index) => (
+        {attachments.map((attachment, index) => (
           <div key={index} > 
-            <TopicCard topic={topic} />
+            <AttachmentCard attachment={attachment} />
           </div>
         ))}
       </Slider>
@@ -55,4 +56,4 @@ const TopicCarousel = ({title,topics} : {title:string,topics: Topic[]}) => {
   );
 };
 
-export default TopicCarousel;
+export default AttachmentCarousel;

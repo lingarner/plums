@@ -1,55 +1,58 @@
 'use client'
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import BottomMenu from "./components/bottomMenu";
-import SideMenu from "./components/sideMenu";
+import SideMenu from "./components/Menu";
 import AddButton from "./components/addButton";
 import TopicCarousel from "./components/topicCarosel";
 import './globals.css';
 import TopicList from "./components/topicList";
 import HeaderMobile from "./components/headerMoblie";
+import {Topic} from './types';
 
 function Home() {
   const topics = ['Math', 'Science', 'English', 'History', 'Geography', 'Art'];
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth < 500);
-    };
+  const convertToTopics = (topics: string[]): Topic[] => {
+    return topics.map(topic => ({
+      title: topic,
+      description: `This is the description for ${topic}`,
+      pinned: false, 
+    }));
+  
+  
+  };
+  const topicObjects: Topic[] = convertToTopics(topics);
 
-    window.addEventListener("resize", checkScreenSize);
-    checkScreenSize();
-
-    return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
 
   return (
     <main className="">
-      {isSmallScreen ? (
+      <div className="sm:hidden">
         <>
         <HeaderMobile/>
-        <TopicList topics={topics}/>
-        <BottomMenu />
-       
-        <AddButton  styles ='fixed  bottom-14 left-1/2 transform -translate-x-1/2'page = "home" />
-      
+        <TopicList topics={topicObjects}/>
+        
+        <AddButton  page = "home"/>
         </>
-      ) : (
-        <>
+        </div>
+
+      <div className="hidden sm:block">
+        <div>
+          <div className="flex">
           <SideMenu />
-          <div className="absolute left-56 top-20 md:w-3/4  m-8">
-          <TopicCarousel title="Study Topics" topics={topics}/>
-          <TopicCarousel title="Pinned" topics={topics}/>
+          <div className=" md:w-3/4  m-16 my-32">
+          <TopicCarousel title="Study Topics" topics={topicObjects}/>
+          <TopicCarousel title="Pinned" topics={topicObjects}/>
           </div>
     
-          <AddButton styles='fixed  bottom-3 right-1 transform -translate-x-1/2'page = "home"/>
-   
-        </>
-      )}
+          <AddButton page = "home"/>
+          </div>
+        </div>
+      </div>
 
       
     </main>
+    
   );
 }
 
