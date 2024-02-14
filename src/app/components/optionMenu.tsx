@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faUpload, faNoteSticky } from '@fortawesome/free-solid-svg-icons';
 import AddTopicModal from './addTopicModal';
+import AddAttachmentModal from './addAttachmentModal';
 
 export default function OptionMenu({ menuType }: { menuType: string }) {
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [addTopicOpen, setAddTopicOpen] = useState(false);
+  const [addAttachmentOpen, setAddAttachmentOpen] = useState(false);
 
-  const openModal = () => {
-    setModalOpen(true);
+  const openTopic = () => {
+    setAddTopicOpen(true);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
+  const closeTopic = () => {
+    setAddTopicOpen(false);
   };
 
   return (
     <>
-      <div className="fixed bottom-28 right-1/4  sm:bottom-20 sm:right-3 rounded-lg border-2 shadow-md w-60 shadow-purple-500/25">
+      <div className="fixed bottom-28 right-3 rounded-lg border-2 shadow-md w-60 shadow-purple-500/25">
         {menuType === 'home' && (
           <div className="bg-white rounded-lg">
             <ul className="p-2">
               <li>
               
-                <button onClick={openModal} className="flex items-center space-x-2 py-2 px-4 sm:px-1 hover:bg-gray-100 rounded-md text-darkPlum font-medium">
+                <button onClick={openTopic} className="flex items-center space-x-2 py-2 px-4 sm:px-1 hover:bg-gray-100 rounded-md text-darkPlum font-medium">
                   <FontAwesomeIcon icon={faPlus} />
                   <span className="whitespace-nowrap text-2xl sm:text-sm">Add New Topic</span>
                 </button>
@@ -35,18 +37,18 @@ export default function OptionMenu({ menuType }: { menuType: string }) {
           <div className="bg-white rounded-lg">
             <ul className="p-2">
               <li>
-                <Link href="">
+                <button onClick={() => setAddAttachmentOpen(true)}>
                   <p className="flex items-center space-x-2 py-2 px-4 hover:bg-gray-100 rounded-md">
-                    <FontAwesomeIcon icon={faPlus} />
-                    <span className="whitespace-nowrap text-lg w-[120px]">Upload File</span>
+                    <FontAwesomeIcon icon={faUpload} />
+                    <span className="whitespace-nowrap text-lg w-[120px]">Upload Attachment</span>
                   </p>
-                </Link>
+                </button>
               </li>
               <li>
                 <Link href="">
                   <p className="flex items-center space-x-2 py-2 px-4 hover:bg-gray-100 rounded-md">
-                    <FontAwesomeIcon icon={faPlus} />
-                    <span className="whitespace-nowrap w-[120px]">Add To Notebook</span>
+                    <FontAwesomeIcon icon={faNoteSticky} />
+                    <span className="whitespace-nowrap text-lg w-[120px]">Add To Notebook</span>
                   </p>
                 </Link>
               </li>
@@ -56,7 +58,8 @@ export default function OptionMenu({ menuType }: { menuType: string }) {
       </div>
 
      
-      <AddTopicModal isOpen={isModalOpen} onClose={closeModal} />
+      <AddTopicModal isOpen={addTopicOpen} onClose={closeTopic} />
+      <AddAttachmentModal isOpen={addAttachmentOpen} onClose={() => setAddAttachmentOpen(false)} />
     </>
   );
 }

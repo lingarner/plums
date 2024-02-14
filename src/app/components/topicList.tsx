@@ -1,9 +1,10 @@
 // components/TopicCarousel.js
 import React from 'react';
 
-import Topic from './topic';
+import TopicCard from './topic';
+import { Topic } from '../types';
 
-const TopicList = ({topics} : {topics: string[]}) => {
+const TopicList = ({topics} : {topics: Topic[]}) => {
 
   return (
     <div className="sm:absolute sm:left-56 sm:top-20 md:w-3/4  m-8">
@@ -11,7 +12,7 @@ const TopicList = ({topics} : {topics: string[]}) => {
     
         {topics.map((topic, index) => (
           <div key={index} > 
-            <Topic topic={topic} />
+            <TopicCard topic={topic} />
           </div>
         ))}
       

@@ -27,3 +27,49 @@ button.slick-arrow:hover {
   background-color: #444;
   border-radius: 50%;
 }
+button.slick-arrow:focus {
+  background-color: #444;
+  border-radius: 50%;
+}
+
+
+.hamburger-menu {
+  width: 30px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.line {
+  width: 100%;
+  height: 3px;
+  background-color: #000;
+  transition: all 0.3s ease-in-out;
+}
+
+.rotate-45 {
+  transform: rotate(45deg);
+}
+
+.-rotate-45 {
+  transform: rotate(-45deg);
+}
+
+.translate-y-1 {
+  transform: translateY(1px);
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: #fff;
+  transition: transform 0.3s ease-in-out;
+  z-index: 10;
+}
+
+
