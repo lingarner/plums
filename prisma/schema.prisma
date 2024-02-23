@@ -1,0 +1,51 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Topic {
+  id           Int          @id @default(autoincrement())
+  name         String
+  description  String?
+  pinned       Boolean      @default(false)
+  subtopics    Subtopic[]
+  attachments  Attachment[]
+  notebook     Notebook?
+}
+
+model Subtopic {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String?
+  topic        Topic    @relation(fields: [topicId], references: [id])
+  topicId      Int
+}
+
+model Attachment {
+  id        Int      @id @default(autoincrement())
+  name      String
+  url       String
+  topic        Topic    @relation(fields: [topicId], references: [id])
+  topicId      Int
+}
+
+model Notebook {
+  id           Int             @id @default(autoincrement())
+  title        String
+  entries      NotebookEntry[]
+  topic        Topic    @relation(fields: [topicId], references: [id])
+  topicId      Int  @unique
+}
+
+model NotebookEntry {
+  id               Int      @id @default(autoincrement())
+  title            String
+  content          String?
+  pinned           Boolean  @default(false)
+  notebook         Notebook @relation(fields: [notebookId], references: [id])
+  notebookId       Int
+}
