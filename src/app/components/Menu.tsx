@@ -18,7 +18,7 @@ export default function SideMenu({ menu, page, topic }: { menu: boolean, page: s
 
   return (
     <div className="flex h-screen">
-      <div className={`h-full bg-sideMenu bg-opacity-20 ${menuFull ? 'w-1/6 fixed' : 'w-1/2'} flex flex-col items-center justify-start font-nunito`}>
+      <div className={`h-full bg-sideMenu bg-opacity-20 ${menuFull ? 'w-1/6 fixed' : 'w-20'} ${page != 'topic'? 'fixed' : ''} flex flex-col items-center justify-start font-nunito`}>
 
         <div className="absolute top-0 right-0" onClick={toggleMenu}>
           <FontAwesomeIcon icon={faChevronLeft} className="text-xl text-darkPlum transform rotate-180 ml-2" style={{ display: menuFull ? 'none' : 'block' }} />
