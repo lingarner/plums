@@ -49,7 +49,7 @@ function Home() {
         <AttachmentCarousel title="Notebook" attachments={topicObjects}/>
         </div>
   
-        <AddButton page = "topic"/>
+        <AddButton page="topic"/>
         </div>
       </div>
     </div>

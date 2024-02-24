@@ -18,6 +18,9 @@ const config: Config = {
         darkPlum: '#4C204E',
         sideMenu: '#8A5190'
       },
+      maxWidth: {
+        'fit-content': 'fit-content',
+      },
     },
   },
   plugins: [],
