@@ -1,5 +1,6 @@
 export interface Topic {
-    title: string;
+    id: number;
+    name: string;
     description: string;
     pinned: boolean;
   }

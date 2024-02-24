@@ -7,22 +7,11 @@ import TopicCarousel from "./components/topicCarosel";
 import './globals.css';
 import TopicList from "./components/topicList";
 import HeaderMobile from "./components/headerMoblie";
-import {Topic} from './types';
+
 
 function Home() {
-  const topics = ['Math', 'Science', 'English', 'History', 'Geography', 'Art'];
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  const convertToTopics = (topics: string[]): Topic[] => {
-    return topics.map(topic => ({
-      title: topic,
-      description: `This is the description for ${topic}`,
-      pinned: false, 
-    }));
-  
-  
-  };
-  const topicObjects: Topic[] = convertToTopics(topics);
+
 
 
   return (
@@ -30,7 +19,7 @@ function Home() {
       <div className="sm:hidden">
         <>
         <HeaderMobile/>
-        <TopicList topics={topicObjects}/>
+        <TopicList />
         
         <AddButton  page = "home"/>
         </>
@@ -39,10 +28,10 @@ function Home() {
       <div className="hidden sm:block">
         <div>
           <div className="flex">
-          <SideMenu />
-          <div className=" md:w-3/4  m-16 my-32">
-          <TopicCarousel title="Study Topics" topics={topicObjects}/>
-          <TopicCarousel title="Pinned" topics={topicObjects}/>
+          <SideMenu menu={true} page="home" topic={null} />
+          <div className="absolute right-0 top-6 md:w-3/4 m-16 my-16">
+          <TopicCarousel title="Study Topics"/>
+          <TopicCarousel title="Pinned" />
           </div>
     
           <AddButton page = "home"/>

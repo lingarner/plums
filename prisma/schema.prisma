@@ -10,7 +10,6 @@ generator client {
 model Topic {
   id           Int          @id @default(autoincrement())
   name         String
-  description  String?
   pinned       Boolean      @default(false)
   subtopics    Subtopic[]
   attachments  Attachment[]
