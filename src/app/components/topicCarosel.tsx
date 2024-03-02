@@ -5,28 +5,11 @@ import 'slick-carousel/slick/slick-theme.css';
 import TopicCard from './topic';
 import { Topic } from '../types';
 
-const TopicCarousel: React.FC<{ title: string }> = ({ title }) => {
-  const [topics, setTopics] = useState<Topic[]>([]);
+const TopicCarousel: React.FC<{ title: string, topics: Topic[] }> = ({ title, topics }) => {
   const [slidesToShow, setSlidesToShow] = useState(5); // Initial value
 
   useEffect(() => {
-    const fetchTopics = async () => {
-      try {
-        const response = await fetch("/api/topics");
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const data = await response.json();
-        setTopics(data);
-        if (title === "Pinned") {
-          filterTopics(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch topics:", error);
-      }
-    };
-
-    fetchTopics();
+    
 
     const handleResize = () => {
       const screenWidth = window.innerWidth;
@@ -46,10 +29,6 @@ const TopicCarousel: React.FC<{ title: string }> = ({ title }) => {
     };
   }, [title]); 
 
-  const filterTopics = (topics: Topic[]) => {
-    const filtered = topics.filter((topic) => topic.pinned);
-    setTopics(filtered);
-  };
 
   const shouldDisplayCarousel = topics.length > slidesToShow;
 

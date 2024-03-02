@@ -6,7 +6,7 @@ import AddTopicModal from './addTopicModal';
 import AddAttachmentModal from './addAttachmentModal';
 import AddLinkModal from './addLinkModal';
 
-export default function OptionMenu({ menuType }: { menuType: string }) {
+export default function OptionMenu({ menuType, onAdd }: { onAdd: (topic: string, description: string) => void, menuType: string }) {
   const [addTopicOpen, setAddTopicOpen] = useState(false);
   const [addAttachmentOpen, setAddAttachmentOpen] = useState(false);
   const [addLinkOpen, setAddLinkOpen] = useState(false);
@@ -66,7 +66,7 @@ export default function OptionMenu({ menuType }: { menuType: string }) {
       </div>
 
      
-      <AddTopicModal isOpen={addTopicOpen} onClose={closeTopic} />
+      <AddTopicModal onAdd={onAdd} isOpen={addTopicOpen} onClose={closeTopic} />
       <AddAttachmentModal isOpen={addAttachmentOpen} onClose={() => setAddAttachmentOpen(false)} />
       <AddLinkModal isOpen={addLinkOpen} onClose={() => setAddLinkOpen(false)} />
     </>

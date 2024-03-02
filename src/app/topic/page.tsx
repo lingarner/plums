@@ -41,8 +41,8 @@ function Home() {
     <div className="hidden sm:block">
       <div>
         <div className="flex">
-        <SideMenu />
-        <div className=" md:w-3/4  m-16 my-16">
+        
+        <div className=" md:w-3/4 m-16 my-16">
 
         <AttachmentCarousel title="Pinned" attachments={topicObjects}/>
         <AttachmentCarousel title="Attachments" attachments={topicObjects}/>
@@ -50,8 +50,10 @@ function Home() {
         </div>
   
         <AddButton page="topic"/>
+        
         </div>
       </div>
+      <SideMenu menu={true} page="topic" topic={null} />
     </div>
 
     

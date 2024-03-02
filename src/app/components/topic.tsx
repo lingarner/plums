@@ -38,7 +38,6 @@ export default function TopicCard({ topic }: { topic: Topic }) {
           <div className='absolute top-0 right-0 h-6 w-10 bg-white rounded-bl-full'></div>
           <div className='absolute top-0 right-0 h-6 w-20 bg-buttonColor opacity-20 rounded-bl-full'></div>
         </div>
-        
         <div className='flex sm:flex-col pt-5 pl-5 z-2 absolute top-0 left-4 sm:left-0 right-0 bottom-0'>
        
           <FontAwesomeIcon
@@ -49,6 +48,7 @@ export default function TopicCard({ topic }: { topic: Topic }) {
             onClick={() => togglePin()}
           />
 
+          <a href={`/topic/${topic.id}`}> 
     
           <div className='w-16 h-16 sm:w-14 sm:h-14 bg-[#f4eef6] rounded-full flex items-center justify-center'>
             <FontAwesomeIcon
@@ -56,7 +56,7 @@ export default function TopicCard({ topic }: { topic: Topic }) {
               className='text-2xl sm:text-xl opacity-90 text-buttonColor'
             />
           </div>
-          <a href={`/topic/${topic.id}`}>
+          
           <h3
             
             className='p-2 text-lg font-semibold pt-5 pl-3 sm:pl-2 sm:pt-2 sm:text-md'>

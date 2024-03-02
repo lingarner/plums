@@ -75,14 +75,15 @@ function Home() {
 
     <div className="hidden sm:block">
       <div>
+      <SideMenu menu={false} page="topic" topic={topicData}/>
         <div className="flex">
           <div className="fixed">
-          <SideMenu menu={false} page="topic" topic={topicData}/>
+          
           </div>
           <div className="absolute right-0 top-1 md:w-3/4 m-16 my-16">
             {topicData && (
               <>
-                <h1 className="text-2xl font-semibold text-darkPlum mb-4 pt-6">{(topicData as { name: string }).name}</h1>
+              
                 <AttachmentCarousel title="Pinned" attachments={topicObjects}/>
                 <AttachmentCarousel title="Attachments" attachments={topicObjects}/>
                 <AttachmentCarousel title="Notebook" attachments={topicObjects}/>

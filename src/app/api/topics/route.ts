@@ -72,3 +72,28 @@ export async function PUT(request: Request) {
     });
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const { id } = await request.json();
+    const deletedTopic = await prisma.topic.delete({
+      where: {
+        id: id,
+      },
+    });
+    return new Response(JSON.stringify(deletedTopic), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (e) {
+    console.error("error here" + e);
+    return new Response(JSON.stringify({ error: "Unable to delete topic" }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+}
