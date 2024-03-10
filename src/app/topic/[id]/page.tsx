@@ -9,6 +9,7 @@ import TopicMenu from "../../components/TopicMenu";
 import AddButton from "../../components/addButton";
 import AttachmentCarousel from "../../components/attachmentCarousel";
 import { Attachment } from "../../types";
+import MyEditor from "@/app/components/editor";
 
 
 function Home() {
@@ -83,7 +84,7 @@ function Home() {
           <div className="absolute right-0 top-1 md:w-3/4 m-16 my-16">
             {topicData && (
               <>
-              
+                <MyEditor/>
                 <AttachmentCarousel title="Pinned" attachments={topicObjects}/>
                 <AttachmentCarousel title="Attachments" attachments={topicObjects}/>
                 <AttachmentCarousel title="Notebook" attachments={topicObjects}/>
