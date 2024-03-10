@@ -83,7 +83,6 @@ function Home() {
           <div className="absolute right-0 top-1 md:w-3/4 m-16 my-16">
             {topicData && (
               <>
-              
                 <AttachmentCarousel title="Pinned" attachments={topicObjects}/>
                 <AttachmentCarousel title="Attachments" attachments={topicObjects}/>
                 <AttachmentCarousel title="Notebook" attachments={topicObjects}/>
