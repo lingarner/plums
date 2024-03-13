@@ -35,16 +35,16 @@ export default function SideMenu({ menu, page, topic }: { menu: boolean, page: s
         </div>
 
         <CurrentDateTime />
+        <a href="/">
         <div className="flex items-center justify-center py-4">
-          <a href="/">
+      
           <Image src={PlumLogo} alt="Plum Logo" className="w-[65px]" />
           {menuFull && <h1 className="text-2xl font-bold text-darkPlum">Plum Learning</h1>}
-          </a>
         </div>
+        </a>
         <ul className={`flex flex-col ${menuFull ? "items-start mw-1/6 p-10" : "items-center"}`}>
           <li className={`my-4 hover:text-buttonColor ${menuFull ? "ml-10" : "ml-0"}`}>
-            <Link href="/" className={`flex items-center ${menuFull ? "pl-5" : "pl-0"} `}>
-              <>
+            <div onClick={() => setMenuFull(true)} className={`flex flex-row items-center ${menuFull ? "pl-5" : "pl-0"} `}>
                 <FontAwesomeIcon icon={faSearch} className={`text-xl ${menuFull ? "mr-2" : "mr-0"}`} onMouseEnter={() => setSearchHover(true)}
                 onMouseLeave={() => setSearchHover(false)}/>
                 {menuFull && <input placeholder='Search' className='text-md bg-transparent outline-none focus:border-darkPlum' />}
@@ -52,8 +52,8 @@ export default function SideMenu({ menu, page, topic }: { menu: boolean, page: s
                  <div className='absolute left-20 flex justify-center'>
                   <div className='bg-buttonColor p-2 m-1 text-white rounded'>Search</div>
                   </div>: null}
-              </>
-            </Link>
+              </div>
+
           </li>
           <li className={`my-4 hover:text-buttonColor ${menuFull ? "ml-10" : "ml-0"}`}>
             <Link href="/" className={`flex items-center ${menuFull ? "pl-5" : "pl-0"} `}>
@@ -105,10 +105,10 @@ export default function SideMenu({ menu, page, topic }: { menu: boolean, page: s
             <ul className="flex flex-col text-lg py-10 text-darkPlum">
             <li className='text-buttonColor'><a>All</a></li>
             <li><a>Pinned</a></li>
-            <li><a>Unpinned</a></li>
+            <li><a>Notebook</a></li>
             </ul>
           </div>
-          <button className="my-10 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => setMenuOpen(true)}><p className='text-white'>Delete {topic?.name} </p></button>
+          <button className="my-10 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => setMenuOpen(true)}><p className='text-white'>Delete Topic </p></button>
         </div>
       }
         

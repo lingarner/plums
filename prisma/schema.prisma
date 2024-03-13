@@ -8,43 +8,80 @@ generator client {
 }
 
 model Topic {
-  id           Int          @id @default(autoincrement())
-  name         String
-  pinned       Boolean      @default(false)
-  subtopics    Subtopic[]
-  attachments  Attachment[]
-  notebook     Notebook?
+  id          Int          @id @default(autoincrement())
+  name        String
+  pinned      Boolean      @default(false)
+  subtopics   Subtopic[]
+  urls        Url[]
+  attachments Attachment[]
+  notebook    Notebook?
+  LinkTopic   LinkTopic[]
 }
 
 model Subtopic {
-  id           Int      @id @default(autoincrement())
-  name         String
-  description  String?
-  topic        Topic    @relation(fields: [topicId], references: [id])
-  topicId      Int
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  topic       Topic       @relation(fields: [topicId], references: [id])
+  topicId     Int
+  links       LinkTopic[]
+}
+
+model Link {
+  id          Int         @id @default(autoincrement())
+  url         String
+  title       String?
+  description String?
+  topics      LinkTopic[]
+}
+
+model LinkTopic {
+  id         Int       @id @default(autoincrement())
+  topic      Topic     @relation(fields: [topicId], references: [id])
+  topicId    Int
+  link       Link      @relation(fields: [linkId], references: [id])
+  linkId     Int
+  Subtopic   Subtopic? @relation(fields: [subtopicId], references: [id])
+  subtopicId Int?
+
+  @@unique([topicId, linkId])
 }
 
 model Attachment {
+  id             Int      @id @default(autoincrement())
+  name           String
+  createdAt      DateTime @default(now())
+  comments       String?
+  pinned         Boolean
+  attachmentData Bytes
+  topic          Topic    @relation(fields: [topicId], references: [id])
+  topicId        Int
+}
+
+model Url {
   id        Int      @id @default(autoincrement())
   name      String
-  url       String
-  topic        Topic    @relation(fields: [topicId], references: [id])
-  topicId      Int
+  url       String?
+  createdAt DateTime @default(now())
+  comments  String?
+  pinned    Boolean
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  topicId   Int
 }
 
 model Notebook {
-  id           Int             @id @default(autoincrement())
-  title        String
-  entries      NotebookEntry[]
-  topic        Topic    @relation(fields: [topicId], references: [id])
-  topicId      Int  @unique
+  id      Int             @id @default(autoincrement())
+  title   String
+  entries NotebookEntry[]
+  topic   Topic           @relation(fields: [topicId], references: [id])
+  topicId Int             @unique
 }
 
 model NotebookEntry {
-  id               Int      @id @default(autoincrement())
-  title            String
-  content          String?
-  pinned           Boolean  @default(false)
-  notebook         Notebook @relation(fields: [notebookId], references: [id])
-  notebookId       Int
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String?
+  pinned     Boolean  @default(false)
+  notebook   Notebook @relation(fields: [notebookId], references: [id])
+  notebookId Int
 }

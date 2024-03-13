@@ -1,54 +1,45 @@
-import React, {useState, useEffect} from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileLines, faThumbTack } from '@fortawesome/free-solid-svg-icons';
-import {Attachment, LinkAttachment} from '../types';
+import { faThumbTack } from '@fortawesome/free-solid-svg-icons';
+import { Attachment } from '../types';
+import Image from 'next/image'
 
-export default function AttachmentCard({attachment}: {attachment: Attachment}) {
+import defaultImage from '../images/default-placeholder.png'
 
-  const [slidesToShow, setSlidesToShow] = useState(5); // Initial value
+export default function AttachmentCard({ attachment }: { attachment: Attachment }) {
+  const [imageData, setImageData] = useState('');
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
-   
-    const handleResize = () => {
-      const screenWidth = window.innerWidth;
-      if (screenWidth <= 750) {
-        setSlidesToShow(2);
-      } else if (screenWidth <= 1030) {
-        setSlidesToShow(3);
-      } 
-    };
+    if (attachment.attachmentData && attachment.attachmentData.type === 'Buffer') {
+      const base64String = Buffer.from(attachment.attachmentData).toString('base64');
+      setImageData(base64String);
+    } else {
+      console.error('Invalid attachment data format:', attachment.attachmentData);
+    }
+  }, [attachment.attachmentData]);
 
-    // Add event listener
-    window.addEventListener('resize', handleResize);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []); 
-
-
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: slidesToShow,
-    slidesToScroll: 1
-  }
-
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
-  
-    <div className='topic-card relative bg-white shadow-lg sm:shadow-md shadow-purple-500/10 sm:w-40  h-32 sm:h-40 rounded-xl overflow-hidden m-3'>
-      <FontAwesomeIcon icon={faThumbTack} className={`${attachment.pinned ? 'text-buttonColor' : 'text-gray-400'} absolute top-1 left-1  bg-white rounded-tr-full`} onClick={() => attachment.pinned = !attachment.pinned}/>
+    <div className="topic-card relative align-middle bg-white shadow-lg sm:shadow-md items-center  shadow-purple-500/10 sm:w-40 h-40 rounded-xl overflow-hidden m-3">
+      <FontAwesomeIcon
+        icon={faThumbTack}
+        className={`${attachment.pinned ? 'text-buttonColor' : 'text-gray-400'} absolute top-1 left-1  bg-white rounded-tr-full`}
+        onClick={() => (attachment.pinned = !attachment.pinned)} // This might not be the best way to update state
+      />
 
-      <div className='flex sm:flex-col pt-5 pl-5 z-1 absolute top-0 left-4 sm:left-0 right-0 bottom-0'>
-    
-      
-        <h3 className='p-2 text-lg font-semibold pt-5 pl-3 sm:pl-2 sm:pt-2 sm:text-md'>{attachment.name}</h3>
+      <div className="flex flex-col justify-center items-center pt-3 z-1 absolute top-0 left-4 sm:left-0 right-0 bottom-0">
+        <h3 className="p-2 text-lg font-semibold pt-7  sm:pt-2 sm:text-sm">{attachment.name}</h3>
+        {imageData && !imageError && (
+          <Image className='pb-3' src={`data:image/png;base64,${imageData}`} width={150} height={150} alt="Base64 Image" onError={handleImageError} />
+        )}
+        {(imageError || !imageData)  && (
+          <Image className='pb-3' src={defaultImage} alt="Default Image"  width={90} height={50} />
+        )}
       </div>
     </div>
-
   );
 }

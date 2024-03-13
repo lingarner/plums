@@ -14,34 +14,34 @@ export default function HeaderMobile() {
   };
 
   return (
-    <header>
-
-      <div className='m-[7px] mt-[20px]'>
-
-        <Image src={PlumLogo} alt="Plum Logo" className=" absolute top-3 w-[12%] inline" />
-
-        <div className="flex items-center w-[100%] flex-col"> 
-
-          <h1 className="flex-none text-xl font-bold text-darkPlum">Plum Learning</h1>
-
-          <div className="flex items-center my-4 hover:text-buttonColor bg-white p-[0.75px] rounded-[10px]">
-            <Link href="/" className="flex items-center">
+    <>
+    <header className="m-auto">
+          <div className="flex w-full px-4 items-center bg-sideMenu bg-opacity-20 justify-between">
+            <div className='flex items-center '>
+              <Image src={PlumLogo} alt="Plum Logo" className="w-[20%] inline" />
+              <h1 className="flex-none text-2xl font-bold text-darkPlum">Plum Learning</h1>
+          </div>
+          <div className={`menu-toggle cursor-pointer ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
+            <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} className="text-3xl" />
+          </div>
+          </div>
+          <div className=" text-darkPlum">
+          
+        </div>
+          <div className="flex items-center my-4 hover:text-buttonColor ml-5 w-[90%] h-10 bg-white p-[0.75px] rounded-[10px]">
+            <Link href="/" className="flex justify-start items-center">
               <>
                 <FontAwesomeIcon icon={faSearch} className="text-xl pl-[4px]" />
-                <input placeholder='Search' className='text-center text-md bg-transparent outline-none focus:border-darkPlum m-w-[10%] ml-3 mr-3'/>
+                <input placeholder='Search' className=' text-md bg-transparent outline-none focus:border-darkPlum m-w-[10%] ml-3 mr-3'/>
               </>
             </Link>
           </div>
 
-        </div>
 
-        <div className="absolute top-3 right-3 text-darkPlum">
-          <div className={`menu-toggle cursor-pointer ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
-            <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} className="text-3xl" />
-          </div>
-        </div>
 
-      </div>
+       
+
+        </header>
 
 
 
@@ -69,16 +69,16 @@ export default function HeaderMobile() {
             </Link>
           </li>
           <li className="my-4 hover:text-buttonColor ml-10">
-            <Link href="/" className="flex items-center   ">
+            <div className="flex items-center ">
               <>
                 <FontAwesomeIcon icon={faCog} className="text-xl mr-2" />
                 <p className='text-md'>Settings</p>
               </>
-            </Link>
+            </div>
           </li>
         </ul>
         </div>
       </div>
-    </header>
+    </>
   );
 }
