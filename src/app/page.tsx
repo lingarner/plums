@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import SideMenu from "./components/Menu";
 import AddButton from "./components/addButton";
-import TopicCarousel from "./components/topicCarosel";
+import TopicCarousel from "./components/topicCarousel";
 import './globals.css';
 import TopicList from "./components/topicList";
 import HeaderMobile from "./components/headerMoblie";

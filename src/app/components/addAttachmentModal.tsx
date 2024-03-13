@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useParams } from 'next/navigation'
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 export default function AddAttachmentModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const params = useParams();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [comments, setComments] = useState<string>('');
 
   if (!isOpen) return null;
 
@@ -14,11 +17,33 @@ export default function AddAttachmentModal({ isOpen, onClose }: { isOpen: boolea
     }
   };
 
-  const handleUpload = () => {
-    if (selectedFile) {
-      // Handle file upload here
-      console.log('Uploaded file:', selectedFile);
-      onClose();
+  const handleCommentsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComments(e.target.value);
+  };
+
+  const handleUpload = async () => {
+    if (selectedFile && params.id) {
+      try {
+        const formData = new FormData();
+        formData.append('name', selectedFile.name);
+        formData.append('attachmentData', selectedFile); 
+        formData.append('comments', comments); 
+        formData.append('topicId', params.id);
+
+        const response = await fetch('/api/attachments', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          console.log('File uploaded successfully');
+          onClose();
+        } else {
+          console.error('Failed to upload file');
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
     }
   };
 

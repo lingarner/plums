@@ -8,14 +8,18 @@ import SideMenu from "../../components/Menu";
 import TopicMenu from "../../components/TopicMenu";
 import AddButton from "../../components/addButton";
 import AttachmentCarousel from "../../components/attachmentCarousel";
-import { Attachment } from "../../types";
-
+import { Attachment, Topic } from "../../types";
+import DeleteTopicModal from '../../components/deleteTopicModal';
+import Notebook from "../../components/notebook";
 
 function Home() {
   const params = useParams();
   const topics = ['Math', 'Science', 'English', 'History', 'Geography', 'Art'];
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [topicData, setTopicData] = useState(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [attachmentData, setAttachmentData] = useState<Attachment[]>([]);
+  const [display, setDisplay] = useState('All');
 
   const convertToTopics = (topics: string[]): Attachment[] => {
     return topics.map(topic => ({
@@ -28,48 +32,77 @@ function Home() {
   };
   const topicObjects: Attachment[] = convertToTopics(topics);
 
-
-  useEffect(() => {
-   
-    const fetchTopicData = async () => {
-      try {
-        const response = await fetch(`/api/topics/topic?topicId=${params.id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const data = await response.json();
-        
-        setTopicData(data);
-      
-      } catch (error) {
-        console.error("Failed to fetch topics:", error);
+  const fetchTopicData = async () => {
+    try {
+      const response = await fetch(`/api/topics/topic?topicId=${params.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
       }
-    };
-
-    fetchTopicData();
+      const data = await response.json();
+      
+      setTopicData(data);
     
+    } catch (error) {
+      console.error("Failed to fetch topics:", error);
+    }
+  };
+
+  const fetchAttachmentData = async () => {
+    try {
+      const response = await fetch(`/api/attachments?topicId=${params.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      const data = await response.json();
+      
+      setAttachmentData(data);
+      console.log(data)
+    
+    } catch (error) {
+      console.error("Failed to fetch attachments:", error);
+    }
+  };
+
+ 
+  useEffect(() => {
+  
+    fetchTopicData();
+    fetchAttachmentData();
   }, []);
 
   return (
+
     <main className="">
+    {deleteModalOpen? <DeleteTopicModal isOpen={deleteModalOpen} topic={topicData} onClose={() => setMenuOpen(false)}/> : <></>}
     <div className="sm:hidden">
       <>
       <HeaderMobile/>
+      
       {topicData && (
         <>
-          <h1 className="text-2xl font-semibold text-darkPlum mb-4 pt-6">{(topicData as { name: string }).name}</h1>
-          <AttachmentCarousel title="Pinned" attachments={topicObjects}/>
-          <AttachmentCarousel title="Attachments" attachments={topicObjects}/>
-          <AttachmentCarousel title="Notebook" attachments={topicObjects}/>
+          <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-semibold text-darkPlum ">{(topicData as { name: string }).name}</h1>
+          <button className="my-10 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => setDeleteModalOpen(true)}><p className='text-white'>Delete Topic</p></button>
+          </div>
+          <AttachmentCarousel title="Pinned" Attachments={attachmentData}/>
+          <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
+          <Notebook />
         </>
       )}
       
       <AddButton page="topic"/>
+
+ 
       </>
     </div>
 
@@ -83,9 +116,9 @@ function Home() {
           <div className="absolute right-0 top-1 md:w-3/4 m-16 my-16">
             {topicData && (
               <>
-                <AttachmentCarousel title="Pinned" attachments={topicObjects}/>
-                <AttachmentCarousel title="Attachments" attachments={topicObjects}/>
-                <AttachmentCarousel title="Notebook" attachments={topicObjects}/>
+                <AttachmentCarousel title="Pinned" Attachments={attachmentData}/>
+                <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
+                <Notebook />
               </>
             )}
           </div>

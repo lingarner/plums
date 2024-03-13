@@ -48,15 +48,15 @@ export default function TopicCard({ topic }: { topic: Topic }) {
             onClick={() => togglePin()}
           />
 
-          <a href={`/topic/${topic.id}`}> 
+          <a href={`/topic/${topic.id}`} className='flex sm:block'> 
     
-          <div className='w-16 h-16 sm:w-14 sm:h-14 bg-[#f4eef6] rounded-full flex items-center justify-center'>
+          <div className='w-16 h-16 sm:w-14 sm:h-14 bg-[#f4eef6] rounded-full flex flex-col items-center justify-center'>
             <FontAwesomeIcon
               icon={faFileLines}
               className='text-2xl sm:text-xl opacity-90 text-buttonColor'
             />
           </div>
-          
+
           <h3
             
             className='p-2 text-lg font-semibold pt-5 pl-3 sm:pl-2 sm:pt-2 sm:text-md'>

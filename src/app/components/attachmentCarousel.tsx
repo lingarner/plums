@@ -1,57 +1,66 @@
-// components/TopicCarousel.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import TopicCard from './topic';
-import { Attachment } from '../types';
 import AttachmentCard from './attachmentCard';
+import { Attachment } from '../types';
 
-const AttachmentCarousel = ({title,attachments} : {title:string,attachments: Attachment[]}) => {
+const AttachmentCarousel: React.FC<{ title: string, Attachments: Attachment[] }> = ({ title, Attachments }) => {
+  const [slidesToShow, setSlidesToShow] = useState(5); // Initial value
 
+  useEffect(() => {
+    
+
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth <= 600) {
+        setSlidesToShow(2);
+      } else if (screenWidth <= 1030) {
+        setSlidesToShow(3);
+      } 
+    };
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [title]); 
+
+
+  const shouldDisplayCarousel = Attachments.length > slidesToShow;
 
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1030,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 1,
-          infinite: true
-        }
-      },
-      {
-        breakpoint: 800,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1
-        }
-      }
-    ]
-  };
+    slidesToShow: slidesToShow,
+    slidesToScroll: 1
+  }
+
+
 
   return (
-    <div >
+    <div>
       <h2 className="text-lg font-semibold text-darkPlum mb-4">{title}</h2>
-      <Slider {...settings}>
-        {attachments.map((attachment, index) => (
-          <div key={index} > 
-            <AttachmentCard attachment={attachment} />
-          </div>
-        ))}
-      </Slider>
+      {shouldDisplayCarousel && (
+        <Slider {...settings}>
+          {Attachments.map((Attachment, index) => (
+            <div key={index}>
+              <AttachmentCard attachment={Attachment} />
+            </div>
+          ))}
+        </Slider>
+      )}
+      {!shouldDisplayCarousel && (
+        <div className="flex flex-wrap">
+          {Attachments.map((Attachment, index) => (
+            <AttachmentCard key={index} attachment={Attachment} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
