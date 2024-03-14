@@ -12,6 +12,7 @@ export interface LinkAttachment {
 }
 
 export interface Attachment {
+  id: number;
   name: string;
   file: string;
   pinned: boolean;

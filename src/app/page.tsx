@@ -35,7 +35,7 @@ function Home() {
     }
   };
   const filterTopics = (topics: Topic[]) => {
-       const filtered = topics.filter((topic) => topic.pinned);
+       const filtered: Topic[] = topics.filter((topic) => topic.pinned);
     
       setPinned(filtered);
 

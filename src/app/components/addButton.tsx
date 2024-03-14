@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faList, faCog, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
-export default function AddButton({onAdd, page}: {onAdd: (topic:string, description:string) => void, page: string}) {
+export default function AddButton({onAdd, page}: {onAdd: (name:string, content:any) => void, page: string}) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
