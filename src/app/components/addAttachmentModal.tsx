@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'next/navigation'
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-export default function AddAttachmentModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void; onAdd: (name:string, content:any) => void}) {
   const params = useParams();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [comments, setComments] = useState<string>('');
@@ -29,14 +29,16 @@ export default function AddAttachmentModal({ isOpen, onClose }: { isOpen: boolea
         formData.append('attachmentData', selectedFile); 
         formData.append('comments', comments); 
         formData.append('topicId', params.id);
-
+  
         const response = await fetch('/api/attachments', {
           method: 'POST',
           body: formData,
         });
-
+  
         if (response.ok) {
-          console.log('File uploaded successfully');
+          const buffer = Buffer.from(await selectedFile.arrayBuffer());
+         
+          onAdd(selectedFile.name, buffer);
           onClose();
         } else {
           console.error('Failed to upload file');
@@ -62,7 +64,7 @@ export default function AddAttachmentModal({ isOpen, onClose }: { isOpen: boolea
           className="w-full mb-4 p-2 border border-gray-300 rounded"
         />
         <h3 className='text-lg font-semibold'>Comments:</h3>
-        <textarea className="w-full mb-4 p-2 border border-gray-300 rounded" />
+        <textarea onChange={handleCommentsChange} className="w-full mb-4 p-2 border border-gray-300 rounded" />
         
         <button onClick={handleUpload} className="bg-buttonColor text-white px-4 py-2 rounded hover:bg-gray-400">
           Upload

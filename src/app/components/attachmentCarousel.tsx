@@ -27,7 +27,7 @@ const AttachmentCarousel: React.FC<{ title: string, Attachments: Attachment[] }>
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [title]); 
+  }, [title, Attachments]); 
 
 
   const shouldDisplayCarousel = Attachments.length > slidesToShow;

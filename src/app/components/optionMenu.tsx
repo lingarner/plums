@@ -67,7 +67,7 @@ export default function OptionMenu({ menuType, onAdd }: { onAdd: (topic: string,
 
      
       <AddTopicModal onAdd={onAdd} isOpen={addTopicOpen} onClose={closeTopic} />
-      <AddAttachmentModal isOpen={addAttachmentOpen} onClose={() => setAddAttachmentOpen(false)} />
+      <AddAttachmentModal onAdd={onAdd} isOpen={addAttachmentOpen} onClose={() => setAddAttachmentOpen(false)} />
       <AddLinkModal isOpen={addLinkOpen} onClose={() => setAddLinkOpen(false)} />
     </>
   );

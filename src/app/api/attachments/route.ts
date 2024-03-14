@@ -77,30 +77,18 @@ export async function POST(request: Request) {
   }
 }
 
-// PUT route to update an existing attachment
+
 export async function PUT(request: Request) {
   try {
-    const formData = await request.formData();
-
-    // Extract data from form fields
-    const id = Number(formData.get("id"));
-    const name = formData.get("name") as string;
-    const comments = formData.get("comments") as string;
-    const attachmentData = formData.get("attachmentData") as Blob;
-
-
-    const fileData = Buffer.from(await attachmentData.arrayBuffer());
-
-  
+    const { id, pinned } = await request.json();
     const updatedAttachment = await prisma.attachment.update({
-      where: { id },
+      where: {
+        id: id,
+      },
       data: {
-        name,
-        comments: comments, 
-        attachmentData: fileData,
+        pinned: pinned,
       },
     });
-
     return new Response(JSON.stringify(updatedAttachment), {
       status: 200,
       headers: {
@@ -108,12 +96,9 @@ export async function PUT(request: Request) {
       },
     });
   } catch (e) {
-    console.error("Error updating attachment: " + e);
-    return new Response(JSON.stringify({ error: "Unable to update attachment" }), {
+    console.error("error here" + e);
+    return new Response(JSON.stringify({ error: "Unable to update topic" }), {
       status: 500,
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
   }
 }
