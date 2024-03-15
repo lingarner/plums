@@ -15,7 +15,7 @@ const Notebook = () => {
   return (
     <div >
       <h2 className="text-lg font-semibold text-darkPlum mb-4">Notebook</h2>
-      <div className='rounded-xl grid grid-cols-3 gap-2'>
+      <div className='rounded-xl grid grid-cols-1  px-3  sm:w-full sm:px-0 sm:grid-cols-3 gap-2'>
         {myArray.map((item) => (
           <div className='bg-white rounded p-5' key={item}>
            Entry {item}

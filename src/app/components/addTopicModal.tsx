@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-export default function AddTopicModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void ; onAdd: (topic:string, description:string) => void}) {
+export default function AddTopicModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void ; onAdd: (topic:string, description:string, type:string) => void}) {
   const [topic, setTopic] = useState('');
   const [description, setDescription] = useState('');
   
@@ -26,7 +26,7 @@ export default function AddTopicModal({ isOpen, onClose, onAdd }: { isOpen: bool
       setDescription('');
       
   
-      onAdd(topic, description);
+      onAdd(topic, description, "");
       onClose();
     } catch (error) {
       console.error("Failed to add topic:", error);

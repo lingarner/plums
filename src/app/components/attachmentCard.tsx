@@ -4,6 +4,7 @@ import { faThumbTack } from '@fortawesome/free-solid-svg-icons';
 import { Attachment } from '../types';
 import defaultImage from '../images/default-placeholder.png';
 
+
 export default function AttachmentCard({ attachment }: { attachment: Attachment }) {
   const [imageData, setImageData] = useState('');
   const [imageError, setImageError] = useState(false);
@@ -33,12 +34,9 @@ export default function AttachmentCard({ attachment }: { attachment: Attachment 
   };
 
   useEffect(() => {
-    if (attachment.name === 'kitten.jpeg') {
-      const base64String = Buffer.from(attachment.attachmentData).toString('base64');
-      setImageData(base64String);
-    }
+   
 
-    if (attachment.attachmentData && (Buffer.isBuffer(attachment.attachmentData) || attachment.attachmentData.type === 'Buffer')) {
+    if (attachment?.attachmentType.startsWith('image')&& (Buffer.isBuffer(attachment.attachmentData) || attachment.attachmentData.type === 'Buffer')) {
       const base64String = Buffer.from(attachment.attachmentData).toString('base64');
       setImageData(base64String);
     }
@@ -56,9 +54,9 @@ export default function AttachmentCard({ attachment }: { attachment: Attachment 
         onClick={() => togglePin()}
       />
 
-      <div className="flex flex-col  items-center pt-3 z-1 absolute top-0 left-4 sm:left-0 right-0 bottom-0">
-        <h3 className="p-2 text-md align-left font-semibold   sm:pt-2 ">{attachment.name}</h3>
-        {imageData && !imageError && (
+      <a href={`/attachment/${attachment.id}`} className="flex flex-col  items-center pt-3 z-1 absolute top-0 left-4 sm:left-0 right-0 bottom-0">
+        <h3 className="w-full overflow-wrap break-words p-2 text-md align-left font-semibold   sm:pt-2 ">{attachment.name}</h3>
+        {imageData? (
           <img
             className="pb-3"
             src={`data:image/png;base64,${imageData}`}
@@ -67,16 +65,15 @@ export default function AttachmentCard({ attachment }: { attachment: Attachment 
             className = "object-cover w-full h-[80%]"
            
           />
-        )}
-        {(imageError || !imageData) && (
+        ) :
           <img
             className="pb-3"
-            src={defaultImage}
+            src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Document_icon_%28the_Noun_Project_27904%29.svg/1024px-Document_icon_%28the_Noun_Project_27904%29.svg.png'
             alt="Default Image"
-            className = "object-cover w-full h-[80%]"
+            className = "object-contain w-full h-[50%]"
           />
-        )}
-      </div>
+        }
+      </a>
     </div>
   );
 }

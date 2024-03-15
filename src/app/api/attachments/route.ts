@@ -36,21 +36,23 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
-    // Extract data from form fields
+   
     const name = formData.get("name") as string;
     const topicId = Number(formData.get("topicId"));
     const attachmentData = formData.get("attachmentData") as Blob;
     const comments = formData.get("comments") as string;
+    const type = formData.get("type") as string;
 
-    // Read attachmentData
+    
     const fileData = Buffer.from(await attachmentData.arrayBuffer());
 
-    // Save attachment data to the database
+    
     const newAttachment = await prisma.attachment.create({
       data: {
         name,
         pinned: false, 
         attachmentData: fileData,
+        attachmentType: type,
         comments: comments,
         topic: {
           connect: {

@@ -17,7 +17,11 @@ const AttachmentCarousel: React.FC<{ title: string, Attachments: Attachment[] }>
         setSlidesToShow(2);
       } else if (screenWidth <= 1030) {
         setSlidesToShow(3);
-      } 
+      } else if (screenWidth <= 1400) {
+        setSlidesToShow(4);
+      } else {
+        setSlidesToShow(5);
+      }
     };
 
     // Add event listener
@@ -55,7 +59,7 @@ const AttachmentCarousel: React.FC<{ title: string, Attachments: Attachment[] }>
         </Slider>
       )}
       {!shouldDisplayCarousel && (
-        <div className="flex flex-wrap">
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
           {Attachments.map((Attachment, index) => (
             <AttachmentCard key={index} attachment={Attachment} />
           ))}

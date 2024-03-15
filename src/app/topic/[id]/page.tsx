@@ -22,10 +22,10 @@ function Home() {
   const [attachmentData, setAttachmentData] = useState([]);
   const [display, setDisplay] = useState('All');
 
-  const addAttachment = (name: string, attachmentData: any) => {
+  const addAttachment = (name: string, attachmentData: any, attachmentType: string) => {
     setAttachmentData((prevAttachments: Attachment[]) => [
       ...prevAttachments,
-      { name, attachmentData }
+      { name, attachmentData, attachmentType }
     ]);
   };
 
