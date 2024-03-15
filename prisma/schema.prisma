@@ -54,6 +54,7 @@ model Attachment {
   comments       String?
   pinned         Boolean
   attachmentData Bytes
+  attachmentType String
   topic          Topic    @relation(fields: [topicId], references: [id])
   topicId        Int
 }

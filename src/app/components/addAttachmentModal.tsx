@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'next/navigation'
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void; onAdd: (name:string, content:any) => void}) {
+export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void; onAdd: (name:string, content:any, type:string) => void}) {
   const params = useParams();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [comments, setComments] = useState<string>('');
@@ -29,7 +29,8 @@ export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen:
         formData.append('attachmentData', selectedFile); 
         formData.append('comments', comments); 
         formData.append('topicId', params.id);
-  
+        formData.append('type', selectedFile.type);
+        
         const response = await fetch('/api/attachments', {
           method: 'POST',
           body: formData,
@@ -37,8 +38,9 @@ export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen:
   
         if (response.ok) {
           const buffer = Buffer.from(await selectedFile.arrayBuffer());
-         
-          onAdd(selectedFile.name, buffer);
+        
+     
+          onAdd(selectedFile.name, buffer, selectedFile.type);
           onClose();
         } else {
           console.error('Failed to upload file');

@@ -19,7 +19,9 @@ export interface Attachment {
   url?: String;
   createdAt: String;
   attachmentData: any;
+  attachmentType: string
   topicId: number;
+  comments: string;
 }
 
 
