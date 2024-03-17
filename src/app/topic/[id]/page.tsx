@@ -14,13 +14,48 @@ import Notebook from "../../components/notebook";
 
 function Home() {
   const params = useParams();
-
  
   const [pinned, setPinned] = useState([]);
   const [topicData, setTopicData] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [attachmentData, setAttachmentData] = useState([]);
-  const [display, setDisplay] = useState('All');
+  const [contentFilter, setContentFilter] = useState('All');
+
+  const handleContentFilterChange = (newFilter:string) => {
+    setContentFilter(newFilter);
+  };
+
+
+  // Function to render content based on contentFilter
+  const renderContent = () => {
+    if (contentFilter === 'All') {
+      return (
+        <>
+          <AttachmentCarousel title="Pinned" Attachments={pinned}/>
+          <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
+          <Notebook />
+        </>
+      )
+    } else if (contentFilter === 'Pinned') {
+      return (
+        <>
+          <AttachmentCarousel title="Pinned" Attachments={pinned}/>
+        </>
+      );
+    } else if (contentFilter === 'Notebook') {
+      return (
+        <>
+          <Notebook />
+        </>
+      );
+    } else if (contentFilter === 'Attachments') {
+      return (
+        <>
+            <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
+        </>
+      )
+    }
+  };
 
   const addAttachment = (name: string, attachmentData: any, attachmentType: string) => {
     setAttachmentData((prevAttachments: Attachment[]) => [
@@ -102,16 +137,14 @@ function Home() {
 
       <div className="hidden sm:block">
         <div>
-          <SideMenu menu={false} page="topic" topic={topicData}/>
+          <SideMenu menu={false} page="topic" topic={topicData} contentFilter={contentFilter} onContentFilterChange={handleContentFilterChange} />
           <div className="flex">
             <div className="fixed">
             </div>
             <div className="absolute right-0 top-1 md:w-3/4 m-16 my-16">
               {topicData && (
                 <>
-                  <AttachmentCarousel title="Pinned" Attachments={pinned}/>
-                  <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
-                  <Notebook />
+                  {renderContent()}
                 </>
               )}
             </div>

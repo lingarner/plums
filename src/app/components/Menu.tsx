@@ -10,7 +10,16 @@ import TopicMenu from './TopicMenu';
 import { Topic } from '../types';
 import DeleteTopicModal from './deleteTopicModal';
 
-export default function SideMenu({ menu, page, topic }: { menu: boolean, page: string, topic: any }) {
+interface SideMenuProps {
+  menu: boolean;
+  page: string;
+  topic: any;
+  contentFilter: string;
+  onContentFilterChange: (filter: string) => void;
+}
+
+export default function SideMenu({ menu, page, topic, contentFilter, onContentFilterChange }: SideMenuProps) {
+
   const [menuFull, setMenuFull] = useState(menu);
   const [searchHover, setSearchHover] = useState(false);
   const [dashboardHover, setDashboardHover] = useState(false);
@@ -18,7 +27,10 @@ export default function SideMenu({ menu, page, topic }: { menu: boolean, page: s
   const [settingsHover, setSettingsHover] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
- 
+
+  const handleOptionChange = (option: string) => {
+    onContentFilterChange(option);
+  };
  
 
   return (
@@ -103,9 +115,18 @@ export default function SideMenu({ menu, page, topic }: { menu: boolean, page: s
           <div>
           <h2 className="pt-10 text-2xl font-semibold text-darkPlum mb-4 ">{topic?.name}</h2>
             <ul className="flex flex-col text-lg py-10 text-darkPlum">
-            <li className='text-buttonColor'><a>All</a></li>
-            <li><a>Pinned</a></li>
-            <li><a>Notebook</a></li>
+            <li className={contentFilter === 'All' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('All')}>
+              <a>All</a>
+            </li>
+            <li className={contentFilter === 'Pinned' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Pinned')}>
+              <a>Pinned</a>
+            </li>
+            <li className={contentFilter === 'Notebook' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Notebook')}>
+              <a>Notebook</a>
+            </li>
+            <li className={contentFilter === 'Attachments' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Attachments')}>
+              <a>Attachments</a>
+            </li>
             </ul>
           </div>
           <button className="my-10 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => setMenuOpen(true)}><p className='text-white'>Delete Topic </p></button>
