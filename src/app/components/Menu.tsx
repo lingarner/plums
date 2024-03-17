@@ -124,6 +124,9 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
             <li className={contentFilter === 'Notebook' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Notebook')}>
               <a>Notebook</a>
             </li>
+            <li className={contentFilter === 'Attachments' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Attachments')}>
+              <a>Attachments</a>
+            </li>
             </ul>
           </div>
           <button className="my-10 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => setMenuOpen(true)}><p className='text-white'>Delete Topic </p></button>

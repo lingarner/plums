@@ -19,7 +19,6 @@ function Home() {
   const [topicData, setTopicData] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [attachmentData, setAttachmentData] = useState([]);
-  const [display, setDisplay] = useState('All');
   const [contentFilter, setContentFilter] = useState('All');
 
   const handleContentFilterChange = (newFilter:string) => {
@@ -49,8 +48,13 @@ function Home() {
           <Notebook />
         </>
       );
+    } else if (contentFilter === 'Attachments') {
+      return (
+        <>
+            <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
+        </>
+      )
     }
-    // Add more conditions as needed
   };
 
   const addAttachment = (name: string, attachmentData: any, attachmentType: string) => {
