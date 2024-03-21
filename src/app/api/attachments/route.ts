@@ -108,25 +108,21 @@ export async function PUT(request: Request) {
 // DELETE route to delete an attachment
 export async function DELETE(request: Request) {
   try {
-    const formData = await request.formData();
-
-    // Extract attachment ID
-    const id = Number(formData.get("id"));
-
-    // Delete attachment from the database
-    await prisma.attachment.delete({
-      where: { id },
+    const { id } = await request.json();
+    const deletedTopic = await prisma.attachment.delete({
+      where: {
+        id: id,
+      },
     });
-
-    return new Response(JSON.stringify({ message: "Attachment deleted successfully" }), {
+    return new Response(JSON.stringify(deletedTopic), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
       },
     });
   } catch (e) {
-    console.error("Error deleting attachment: " + e);
-    return new Response(JSON.stringify({ error: "Unable to delete attachment" }), {
+    console.error("error here" + e);
+    return new Response(JSON.stringify({ error: "Unable to delete topic" }), {
       status: 500,
       headers: {
         "Content-Type": "application/json",

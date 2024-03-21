@@ -7,6 +7,8 @@ import { Topic } from '../types';
 
 const TopicCarousel: React.FC<{ title: string, topics: Topic[] }> = ({ title, topics }) => {
   const [slidesToShow, setSlidesToShow] = useState(5); // Initial value
+  const shouldDisplayPins = !(title === "Subtopics")
+  
 
   useEffect(() => {
     
@@ -49,7 +51,7 @@ const TopicCarousel: React.FC<{ title: string, topics: Topic[] }> = ({ title, to
         <Slider {...settings}>
           {topics.map((topic, index) => (
             <div key={index}>
-              <TopicCard topic={topic} />
+              <TopicCard displayPin={shouldDisplayPins} topic={topic} />
             </div>
           ))}
         </Slider>
@@ -57,7 +59,7 @@ const TopicCarousel: React.FC<{ title: string, topics: Topic[] }> = ({ title, to
       {!shouldDisplayCarousel && (
         <div className="flex flex-wrap">
           {topics.map((topic, index) => (
-            <TopicCard key={index} topic={topic} />
+            <TopicCard displayPin={shouldDisplayPins} key={index} topic={topic} />
           ))}
         </div>
       )}

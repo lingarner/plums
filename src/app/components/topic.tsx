@@ -4,7 +4,7 @@ import { faFileLines, faThumbTack } from '@fortawesome/free-solid-svg-icons';
 import { Topic } from '../types';
 
 
-export default function TopicCard({ topic }: { topic: Topic }) {
+export default function TopicCard({ topic, displayPin}: { topic: Topic, displayPin: boolean }) {
   const [isPinned, setIsPinned] = useState(topic.pinned);
 
   const togglePin = async () => {
@@ -39,7 +39,7 @@ export default function TopicCard({ topic }: { topic: Topic }) {
           <div className='absolute top-0 right-0 h-6 w-20 bg-buttonColor opacity-20 rounded-bl-full'></div>
         </div>
         <div className='flex sm:flex-col pt-5 pl-5 z-2 absolute top-0 left-4 sm:left-0 right-0 bottom-0'>
-       
+        {displayPin &&
           <FontAwesomeIcon
             icon={faThumbTack}
             className={`${
@@ -47,7 +47,7 @@ export default function TopicCard({ topic }: { topic: Topic }) {
             } absolute top-1 left-1 bg-white rounded-tr-full cursor-pointer z-0`}
             onClick={() => togglePin()}
           />
-
+}
           <a href={`/topic/${topic.id}`} className='flex sm:block'> 
     
           <div className='w-16 h-16 sm:w-14 sm:h-14 bg-[#f4eef6] rounded-full flex flex-col items-center justify-center'>

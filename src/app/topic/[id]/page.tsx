@@ -11,6 +11,8 @@ import AttachmentCarousel from "../../components/attachmentCarousel";
 import { Attachment, Topic } from "../../types";
 import DeleteTopicModal from '../../components/deleteTopicModal';
 import Notebook from "../../components/notebook";
+import TopicCarousel from "@/app/components/topicCarousel";
+
 
 function Home() {
   const params = useParams();
@@ -20,6 +22,7 @@ function Home() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [attachmentData, setAttachmentData] = useState([]);
   const [contentFilter, setContentFilter] = useState('All');
+  const [subtopicData, setSubtopicData] = useState([]);
 
   const handleContentFilterChange = (newFilter:string) => {
     setContentFilter(newFilter);
@@ -31,8 +34,13 @@ function Home() {
     if (contentFilter === 'All') {
       return (
         <>
+        
           <AttachmentCarousel title="Pinned" Attachments={pinned}/>
+          
           <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
+          {subtopicData && 
+                <TopicCarousel title="Subtopics" topics={subtopicData} />
+              }
           <Notebook />
         </>
       )
@@ -111,6 +119,28 @@ function Home() {
     filterAttachments(attachmentData);
   }, [params.id, attachmentData]);
 
+  useEffect(() => {
+    const fetchSubtopics = async () => {
+      try {
+        const response = await fetch(`/api/topics/subtopic?parentId=${params.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+
+        setSubtopicData(data);
+      } catch (error) {
+        console.error("Failed to fetch attachments:", error);
+      }
+    };
+    fetchSubtopics();
+
+  }, [params.id, subtopicData]);
  
 
 
@@ -138,10 +168,15 @@ function Home() {
       <div className="hidden sm:block">
         <div>
           <SideMenu menu={false} page="topic" topic={topicData} contentFilter={contentFilter} onContentFilterChange={handleContentFilterChange} />
+         
           <div className="flex">
             <div className="fixed">
+              
             </div>
             <div className="absolute right-0 top-1 md:w-3/4 m-16 my-16">
+            
+             
+
               {topicData && (
                 <>
                   {renderContent()}
