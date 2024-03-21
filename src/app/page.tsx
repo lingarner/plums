@@ -28,12 +28,13 @@ function Home() {
         throw new Error(`Error: ${response.status}`);
       }
       const data = await response.json();
-      setTopics(data);
-      
+      const filteredTopics = data.filter((topic: Topic) => topic.parentId === null);
+      setTopics(filteredTopics);
     } catch (error) {
       console.error("Failed to fetch topics:", error);
     }
   };
+  
   const filterTopics = (topics: Topic[]) => {
        const filtered: Topic[] = topics.filter((topic) => topic.pinned);
     

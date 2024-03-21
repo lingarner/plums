@@ -3,6 +3,7 @@ export interface Topic {
     name: string;
     description: string;
     pinned: boolean;
+    parentId: number;
   }
 
 export interface LinkAttachment {
