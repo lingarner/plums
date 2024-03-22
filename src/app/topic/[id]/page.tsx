@@ -144,7 +144,7 @@ function Home() {
           throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data)
+
         setUrls(data);
       } catch (error) {
         console.error("Failed to fetch attachments:", error);
@@ -187,15 +187,19 @@ function Home() {
       {deleteModalOpen && topicData ? <DeleteTopicModal isOpen={deleteModalOpen} topic={topicData} onClose={() => setDeleteModalOpen(false)}/> : <></>}
       <div className="sm:hidden">
         <>
-        <HeaderMobile/>
+        <HeaderMobile page={"topic"}/>
         {topicData && (
           <>
             <div className="flex justify-between items-center">
               <h1 className="text-2xl font-semibold text-darkPlum ">{(topicData as { name: string }).name}</h1>
               <button className="my-10 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => setDeleteModalOpen(true)}><p className='text-white'>Delete Topic</p></button>
             </div>
+
             <AttachmentCarousel title="Pinned" Attachments={pinned}/>
             <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
+            {urls.length > 0 ?  <LinkCarousel title="Links" Links={urls} /> :<> <h2 className="text-lg font-semibold text-darkPlum mb-4">Links</h2><p className="text-gray-500 mt-2">Links are currently empty</p></>}  
+            {subtopicData.length > 0 ?  <TopicCarousel title="Subtopics" topics={subtopicData} /> : <p className="text-gray-500 mt-2">Subtopics are currently empty</p>} 
+
             <Notebook />
           </>
         )}
@@ -208,10 +212,8 @@ function Home() {
           <SideMenu menu={false} page="topic" topic={topicData} contentFilter={contentFilter} onContentFilterChange={handleContentFilterChange} />
          
           <div className="flex">
-            <div className="fixed">
-              
-            </div>
-            <div className="absolute right-0 top-1 md:w-3/4 m-16 my-16">
+          
+            <div className="fixed left-60 top-1 md:w-3/4 m-16 my-16">
             
              
 

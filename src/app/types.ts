@@ -4,7 +4,14 @@ export interface Topic {
     description: string;
     pinned: boolean;
     parentId: number;
+    topic : any;
   }
+
+export interface Tag {
+  id: number;
+  name: string;
+
+}
 
 export interface Url {
   id: number;
@@ -12,6 +19,7 @@ export interface Url {
   url: string;
   comments: string;
   pinned: boolean;
+  topicId: number;
 }
 
 export interface Attachment {

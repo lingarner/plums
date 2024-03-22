@@ -9,7 +9,7 @@ export default function AddSubtopicModal({ isOpen, onClose, onAdd }: { isOpen: b
   const params = useParams();
   
   const handleSubmit = async () => {
-    console.log("params.id", params.id)
+
     try {
       const response = await fetch('/api/topics/subtopic', {
         method: 'POST',

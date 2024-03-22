@@ -9,7 +9,7 @@ async function main() {
             name: "My Topic",
         },
     });
-    console.log(topic);
+
 }
 
 main()

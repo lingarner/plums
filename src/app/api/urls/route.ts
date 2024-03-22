@@ -107,12 +107,12 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const { id } = await request.json();
-    const deletedTopic = await prisma.attachment.delete({
+    const deletedUrl = await prisma.url.delete({
       where: {
         id: id,
       },
     });
-    return new Response(JSON.stringify(deletedTopic), {
+    return new Response(JSON.stringify(deletedUrl), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

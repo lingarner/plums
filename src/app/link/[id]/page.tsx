@@ -4,22 +4,22 @@ import { useParams } from 'next/navigation';
 
 import HeaderMobile from "../../components/headerMoblie";
 import SideMenu from "../../components/Menu";
-import DeleteAttachmentModal from "../../components/deleteAttachmentModal";
-import { Attachment } from "../../types";
-
-
+import { Url } from "../../types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import DeleteAttachmentModal from "@/app/components/deleteAttachmentModal";
 
 function Home() {
   const params = useParams();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [attachmentData, setAttachmentData] = useState<Attachment>();
+  const [urlData, seturlData] = useState<Url>();
   const [data, setData] = useState('');
   const [comments, setComments] = useState('');
 
   useEffect(() => {
-    const fetchAttachmentData = async () => {
+    const fetchurlData = async () => {
       try {
-        const response = await fetch(`/api/attachments/attachment?attachmentId=${params.id}`, {
+        const response = await fetch(`/api/urls/url?urlId=${params.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -29,35 +29,55 @@ function Home() {
           throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
-        setAttachmentData(data);
+        seturlData(data);
   
         // Set the initial value of comments from the fetched data
         setComments(data.comments || ''); 
-        if (data.attachmentData && (Buffer.isBuffer(data.attachmentData) || data.attachmentData.type === 'Buffer')) {
-          const base64String = Buffer.from(data.attachmentData).toString('base64');
-          setData(base64String);
-        }
       } catch (error) {
-        console.error("Failed to fetch attachment data:", error);
+        console.error("Failed to fetch url data:", error);
       }
     };
   
     
-  fetchAttachmentData();
+  fetchurlData();
   
   }, [params.id]);
+
+  const DeleteUrl = async () => {
+    try {
+      const response = await fetch(`/api/urls`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: urlData?.id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete attachment');
+      }
+
+      window.location.href = `/topic/${urlData?.topicId}`;
+
+    } catch (error) {
+      console.error('Error deleting attachment:', error);
+    }
+    
+  };
   
 
   const onSave = async () => {
 
     try {
-      const response = await fetch(`/api/attachments/attachment`, {
+      const response = await fetch(`/api/urls/url`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: attachmentData?.id,
+          id: urlData?.id,
           comments: comments
         }),
       });
@@ -76,39 +96,17 @@ function Home() {
   };
   
 
-  const renderAttachment = () => {
-    if (!attachmentData) return null;
 
-    if (attachmentData.attachmentType.startsWith('image')) {
-      return (
-        <img src={`data:image/png;base64,${data}`} alt={attachmentData.name} className="max-h-[40vh] py-10" />
-      );
-    } else if (attachmentData.attachmentType.startsWith('application/pdf')) {
-      // You need to implement a PDF viewer component here
-      return (
-        <embed className="w-[80%] sm:w-[100%] sm:h-[30vh] pdf-embed" style={{ zoom: '200%' }} src={`data:application/pdf;base64,${data}`}  />
-      )
-    } else if (attachmentData.attachmentType.startsWith('application')) {
-      return (
-        <a href={`data:application/msword;base64,${data}`} download={`${attachmentData.name}`} className="text-blue-600 underline">Download {attachmentData.name}</a>
-        
-      );
-    } 
-    else {
-      return null; // Handle other attachment types if needed
-    }
-  };
 
   return (
     <main className="">
-      {deleteModalOpen && attachmentData ? <DeleteAttachmentModal isOpen={deleteModalOpen} attachment={attachmentData} onClose={() => setDeleteModalOpen(false)}/> : <></>}
       <div className="sm:hidden">
         <>
-          <HeaderMobile page ="attachment"/>
-          <a href={`/topic/${attachmentData?.topicId}`}>Back to Topic</a>
+          <HeaderMobile page="url"/>
+          <a href={`/topic/${urlData?.topicId}`}>Back to Topic</a>
           <div className="flex flex-col justify-center align-center">
-          <h2 className="text-xl font-semibold text-darkPlum mb-2 border-b border-darkPlum">{attachmentData?.name}</h2>
-              {renderAttachment()}
+          <h2 className="text-xl font-semibold text-darkPlum mb-2 border-b border-darkPlum">{urlData?.name}</h2>
+          <a className="w-full text-buttonColor overflow-wrap break-words p-2 text-sm align-left font-semibold sm:pt-2" href="{urlData?.url}">{urlData?.url}</a>
             <h3 className="text-lg font-semibold text-darkPlum mb-2">Comments</h3>
             <textarea 
              className="w-full h-24 border border-gray-300 rounded-md p-2" 
@@ -124,17 +122,19 @@ function Home() {
       </div>
       <div className="hidden sm:block">
         <div>
-          <SideMenu  onContentFilterChange={() => {}} contentFilter="all" menu={false} page="attachment" topic={attachmentData}/>
+          <SideMenu  onContentFilterChange={() => {}} contentFilter="all" menu={false} page="url" topic={urlData}/>
           <div className="flex">
             <div className="absolute top-10 left-24 flex-col">
-            <div><a className=" text-lg text-darkPlum"href={`/topic/${attachmentData?.topicId}`}>Back to Topic</a></div>
-            <button className="my-4 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => setDeleteModalOpen(true)}><p className='text-white'>Delete</p></button>
+            <div><a className=" text-lg text-darkPlum"href={`/topic/${urlData?.topicId}`}>Back to Topic</a></div>
+            <button className="my-4 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => DeleteUrl()}><p className='text-white'>Delete</p></button>
 
            </div>
             <div className="absolute right-0 top-1 md:w-3/4 m-16 my-16">
            
-              <h2 className="text-xl font-semibold text-darkPlum mb-2 border-b border-darkPlum">{attachmentData?.name}</h2>
-              {renderAttachment()}
+              <h2 className="text-xl font-semibold text-darkPlum mb-2 border-b border-darkPlum">{urlData?.name}</h2>
+              <div>
+              <a className="w-full text-buttonColor overflow-wrap break-words p-2 text-sm align-left font-semibold sm:pt-2" href="{urlData?.url}">{urlData?.url}</a>
+              </div>
               <h3 className="text-lg font-semibold text-darkPlum mb-2">Comments</h3>
               <textarea 
              className="w-full h-24 border border-gray-300 rounded-md p-2" 

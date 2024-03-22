@@ -15,7 +15,9 @@ export default function LinkCard({ link }: { link: Url }) {
 
 
       <div className="flex flex-col  items-center pt-3 z-1 absolute top-0 left-4 sm:left-0 right-0 bottom-0">
+        <a  href={`/link/${link.id}`}>
         <h3 className="w-full overflow-wrap break-words p-2 text-md align-left font-semibold   sm:pt-2 ">{link.name}</h3>
+        </a>
         <a className="w-full text-buttonColor overflow-wrap break-words p-2 text-sm align-left font-semibold sm:pt-2 relative" href={link.url} target="_blank" style={{ maxWidth: '100%', display: 'inline-block', textDecoration: 'none', }}>
           {link.url}
           <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-1 text-gray-500 text-xs absolute top-0 right-0" />

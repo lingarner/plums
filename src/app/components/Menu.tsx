@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faList, faCog, faTachometerAlt, faSearch, faChevronLeft } from '@fortawesome/free-solid-svg-icons'; // Import the arrow icon
@@ -7,7 +7,7 @@ import PlumLogo from '../images/plum_logo.png';
 import '../globals.css';
 import CurrentDateTime from './datetime';
 import TopicMenu from './TopicMenu';
-import { Topic } from '../types';
+import { Topic, Tag } from '../types';
 import DeleteTopicModal from './deleteTopicModal';
 
 interface SideMenuProps {
@@ -26,6 +26,92 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
   const [topicsHover, setTopicsHover] = useState(false);
   const [settingsHover, setSettingsHover] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [tagInput, setTagInput] = useState(''); // State to store tag input value
+  const [addTag, setAddTag] = useState(false);
+
+  const fetchTags = async () => {
+    try {
+      if (topic) {
+        const response = await fetch(`/api/tags?topicId=${topic.id}`);
+        const data = await response.json();
+
+        setTags(data);
+      } 
+    } catch (error) {
+
+    }
+  };
+  
+  const handleAddTag = async () => {
+    if (tagInput.trim() !== '') {
+  
+
+      try {
+        // Make a POST request to your API endpoint
+        const response = await fetch('/api/tags', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            topicId: topic.id,
+            tagName: tagInput.trim(),
+          }),
+        });
+  
+        if (response.ok) {
+          // Tag created successfully
+          const newTag = await response.json();
+        
+        } else {
+          // Handle error response
+          console.error('Error creating tag:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error creating tag:', error);
+      }
+      setTagInput('');
+    }
+    setAddTag(false);
+  };
+
+
+  useEffect(() => {
+    fetchTags();
+  });
+  
+
+  // Function to handle removing tags
+  const handleDeleteTag = async (tagId: number) => {
+    try {
+      
+      const response = await fetch('/api/tags', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          topicId: topic.id,
+          tagId: tagId,
+        }),
+      });
+  
+      if (response.ok) {
+
+        const deletedTag = await response.json();
+
+
+      } else {
+
+        console.error('Error deleting tag:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting tag:', error);
+    }
+  };
+  
+
 
 
   const handleOptionChange = (option: string) => {
@@ -111,10 +197,36 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
       </div>
       
       {page === 'topic' && !menuFull &&
-        <div className="h-screen w-40 flex flex-col items-center justify-between">
+        <div className="h-screen w-40 fixed left-16   flex flex-col items-center justify-between">
           <div>
           <h2 className="pt-10 text-2xl font-semibold text-darkPlum mb-4 ">{topic?.name}</h2>
-            <ul className="flex flex-col text-lg py-10 text-darkPlum">
+          <div className='absolute top-20 flex flex-wrap'>
+          {tags?.map((tag) => (
+                <div key = {tag.id} className="flex rounded-full bg-buttonColor bg-opacity-10  border-buttonColor border  m-1 p-1">
+           
+                <p className="text-sm text-darkPlum opacity-100">{tag.name}</p>
+                <button onClick={() => handleDeleteTag(tag.id)} className="ml-1 text-sm text-red-600" >
+                  X
+                </button>
+              </div>
+              ))}
+        
+           {!addTag ?    
+          <button onClick={() => setAddTag(true)}  className="flex rounded-full bg-gray bg-opacity-40 border-buttonColor border m-1 p-1 hover:bg-opacity-100">
+            <p className="text-sm text-darkPlum opacity-100">Add tag</p>
+            <div className="ml-1 text-sm text-red-600" >
+              +
+            </div>
+          </button> :
+            <div  className="flex rounded-full bg-gray bg-opacity-40 border-buttonColor border m-1 p-1 hover:bg-opacity-100">
+            <input autoFocus onKeyDown={(e) => e.key === 'Enter' ? handleAddTag() : null} type ="text"  value = {tagInput} onChange={(e) => setTagInput(e.target.value)}  className="text-sm w-16 text-darkPlum opacity-100"/>
+            <button onClick={() => setAddTag(false)} className="ml-1 text-sm text-red-600" >
+              X
+            </button>
+          </div> 
+          }   
+          </div>  
+            <ul className="absolute top-40 flex flex-col text-lg py-10 text-darkPlum">
             <li className={contentFilter === 'All' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('All')}>
               <a>All</a>
             </li>
