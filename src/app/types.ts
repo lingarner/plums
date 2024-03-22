@@ -6,9 +6,11 @@ export interface Topic {
     parentId: number;
   }
 
-export interface LinkAttachment {
+export interface Url {
+  id: number;
   name: string;
   url: string;
+  comments: string;
   pinned: boolean;
 }
 

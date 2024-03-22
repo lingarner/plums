@@ -8,17 +8,32 @@ generator client {
 }
 
 model Topic {
-  id          Int          @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
-  pinned      Boolean      @default(false)
+  pinned      Boolean       @default(false)
   urls        Url[]
   attachments Attachment[]
   notebook    Notebook?
-  parentId     Int?      @map("parent_id")
-  parent       Topic?       @relation("TopicToTopic", fields: [parentId], references: [id], onDelete: SetNull) 
-  subtopics     Topic[]      @relation("TopicToTopic")
+  parentId    Int?          @map("parent_id")
+  parent      Topic?        @relation("TopicToTopic", fields: [parentId], references: [id], onDelete: SetNull)
+  subtopics   Topic[]       @relation("TopicToTopic")
+  tags        TagsOnTopic[]
 }
 
+model Tag {
+  id     Int           @id @default(autoincrement())
+  name   String
+  topics TagsOnTopic[]
+}
+
+model TagsOnTopic {
+  topic   Topic @relation(fields: [topicId], references: [id])
+  topicId Int // relation scalar field (used in the `@relation` attribute above)
+  tag     Tag   @relation(fields: [tagId], references: [id])
+  tagId   Int // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([tagId, topicId])
+}
 
 model Attachment {
   id             Int      @id @default(autoincrement())

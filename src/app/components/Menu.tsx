@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faList, faCog, faTachometerAlt, faSearch, faChevronLeft } from '@fortawesome/free-solid-svg-icons'; // Import the arrow icon
 import Image from 'next/image';
@@ -68,7 +68,7 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
 
           </li>
           <li className={`my-4 hover:text-buttonColor ${menuFull ? "ml-10" : "ml-0"}`}>
-            <Link href="/" className={`flex items-center ${menuFull ? "pl-5" : "pl-0"} `}>
+            <a href="/" className={`flex items-center ${menuFull ? "pl-5" : "pl-0"} `}>
               <>
                 <FontAwesomeIcon icon={faTachometerAlt} className={`text-xl ${menuFull ? "mr-2" : "mr-0"}`} onMouseEnter={() => setDashboardHover(true)}
                 onMouseLeave={() => setDashboardHover(false)} />
@@ -78,10 +78,10 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
                   <div className='bg-buttonColor p-2 m-1 text-white rounded'>Dashboard</div>
                   </div>: null}
               </>
-            </Link>
+            </a>
           </li>
           <li className={`my-4 hover:text-buttonColor ${menuFull ? "ml-10" : "ml-0"}`}>
-            <Link href="/" className={`flex items-center ${menuFull ? "pl-5" : "pl-0"} `}>
+            <a href="/" className={`flex items-center ${menuFull ? "pl-5" : "pl-0"} `}>
               <>
                 <FontAwesomeIcon icon={faList} className={`text-xl ${menuFull ? "mr-2" : "mr-0"}`} onMouseEnter={() => setTopicsHover(true)}
                 onMouseLeave={() => setTopicsHover(false)}/>
@@ -91,10 +91,10 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
                   <div className='bg-buttonColor p-2 m-1 text-white rounded'>Topics</div>
                   </div>: null}
               </>
-            </Link>
+            </a>
           </li>
           <li className={`my-4 hover:text-buttonColor ${menuFull ? "ml-10" : "ml-0"}`}>
-            <Link href="/" className={`flex items-center ${menuFull ? "pl-5" : "pl-0"} `}>
+            <a href="/" className={`flex items-center ${menuFull ? "pl-5" : "pl-0"} `}>
               <>
                 <FontAwesomeIcon icon={faCog} className={`text-xl ${menuFull ? "mr-2" : "mr-0"}`} onMouseEnter={() => setSettingsHover(true)}
                 onMouseLeave={() => setSettingsHover(false)}/>
@@ -104,7 +104,7 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
                   <div className='bg-buttonColor p-2 m-1 text-white rounded'>Settings</div>
                   </div>: null}
               </>
-            </Link>
+            </a>
           </li>
         </ul>
 
@@ -121,11 +121,17 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
             <li className={contentFilter === 'Pinned' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Pinned')}>
               <a>Pinned</a>
             </li>
-            <li className={contentFilter === 'Notebook' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Notebook')}>
-              <a>Notebook</a>
-            </li>
             <li className={contentFilter === 'Attachments' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Attachments')}>
               <a>Attachments</a>
+            </li>
+            <li className={contentFilter === 'Subtopics' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Subtopics')}>
+              <a>Subtopics</a>
+            </li>
+            <li className={contentFilter === 'Links' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Links')}>
+              <a>Links</a>
+            </li>
+             <li className={contentFilter === 'Notebook' ? 'text-buttonColor' : ''} onClick={() => handleOptionChange('Notebook')}>
+              <a>Notebook</a>
             </li>
             </ul>
           </div>

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import AttachmentCard from './attachmentCard';
-import { Attachment } from '../types';
+import LinkCard from './linkCard';
+import { Url } from '../types';
 
-const AttachmentCarousel: React.FC<{ title: string, Attachments: Attachment[] }> = ({ title, Attachments }) => {
+const LinkCarousel: React.FC<{ title: string, Links: Url[] }> = ({ title, Links }) => {
   const [slidesToShow, setSlidesToShow] = useState(5); // Initial value
 
   useEffect(() => {
@@ -31,9 +31,10 @@ const AttachmentCarousel: React.FC<{ title: string, Attachments: Attachment[] }>
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [title, Attachments]); 
+  }, [title, Links]); 
 
-  const shouldDisplayCarousel = Attachments.length > slidesToShow;
+
+  const shouldDisplayCarousel = Links.length > slidesToShow;
 
   const settings = {
     dots: false,
@@ -50,17 +51,17 @@ const AttachmentCarousel: React.FC<{ title: string, Attachments: Attachment[] }>
       <h2 className="text-lg font-semibold text-darkPlum mb-4">{title}</h2>
       {shouldDisplayCarousel && (
         <Slider {...settings}>
-          {Attachments.map((Attachment, index) => (
+          {Links.map((link, index) => (
             <div key={index}>
-              <AttachmentCard attachment={Attachment} />
+              <LinkCard link={link} />
             </div>
           ))}
         </Slider>
       )}
       {!shouldDisplayCarousel && (
         <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-          {Attachments.map((Attachment, index) => (
-            <AttachmentCard key={index} attachment={Attachment} />
+          {Links.map((link, index) => (
+            <LinkCard key={index} link={link} />
           ))}
         </div>
       )}
@@ -68,4 +69,4 @@ const AttachmentCarousel: React.FC<{ title: string, Attachments: Attachment[] }>
   );
 };
 
-export default AttachmentCarousel;
+export default LinkCarousel;

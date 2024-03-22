@@ -8,21 +8,24 @@ import SideMenu from "../../components/Menu";
 import TopicMenu from "../../components/TopicMenu";
 import AddButton from "../../components/addButton";
 import AttachmentCarousel from "../../components/attachmentCarousel";
-import { Attachment, Topic } from "../../types";
+import { Attachment, Topic, Url } from "../../types";
 import DeleteTopicModal from '../../components/deleteTopicModal';
 import Notebook from "../../components/notebook";
 import TopicCarousel from "@/app/components/topicCarousel";
+import LinkCarousel from "@/app/components/LinkCarousel";
+
 
 
 function Home() {
   const params = useParams();
  
-  const [pinned, setPinned] = useState([]);
-  const [topicData, setTopicData] = useState(null);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [attachmentData, setAttachmentData] = useState([]);
+  const [pinned, setPinned] = useState<Attachment[]>([]);
+  const [topicData, setTopicData] = useState<Topic>();
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [attachmentData, setAttachmentData] = useState<Attachment[]>([]);
   const [contentFilter, setContentFilter] = useState('All');
-  const [subtopicData, setSubtopicData] = useState([]);
+  const [subtopicData, setSubtopicData] = useState<Topic[]>([]);
+  const [urls, setUrls] = useState<Url[]>([]);
 
   const handleContentFilterChange = (newFilter:string) => {
     setContentFilter(newFilter);
@@ -35,19 +38,20 @@ function Home() {
       return (
         <>
         
-          <AttachmentCarousel title="Pinned" Attachments={pinned}/>
+          {pinned.length > 0 ? <AttachmentCarousel title="Pinned" Attachments={pinned}/> :<><h2 className="text-lg font-semibold text-darkPlum mb-4">Pinned</h2> <p className="text-gray-500 mt-2">Pinned is currently empty</p></>}
+          {attachmentData.length > 0 ? <AttachmentCarousel title="Attachments" Attachments={attachmentData}/> : <><h2 className="text-lg font-semibold text-darkPlum mb-4">Attachments</h2><p className="text-gray-500 mt-2">Attachments are currently empty</p></>} 
+          {urls.length > 0 ?  <LinkCarousel title="Links" Links={urls} /> :<> <h2 className="text-lg font-semibold text-darkPlum mb-4">Links</h2><p className="text-gray-500 mt-2">Links are currently empty</p></>}  
+          {subtopicData.length > 0 ?  <TopicCarousel title="Subtopics" topics={subtopicData} /> : <><h2 className="text-lg font-semibold text-darkPlum mb-4">Subtopics</h2> <p className="text-gray-500 mt-2">Subtopics are currently empty</p></>}
           
-          <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
-          {subtopicData && 
-                <TopicCarousel title="Subtopics" topics={subtopicData} />
-              }
+         
+         
           <Notebook />
         </>
       )
     } else if (contentFilter === 'Pinned') {
       return (
         <>
-          <AttachmentCarousel title="Pinned" Attachments={pinned}/>
+          {pinned.length > 0 ? <AttachmentCarousel title="Pinned" Attachments={pinned}/> : <><h2 className="text-lg font-semibold text-darkPlum mb-4">Pinned</h2><p className="text-gray-500 mt-2">Pinned is currently empty</p></>}
         </>
       );
     } else if (contentFilter === 'Notebook') {
@@ -56,10 +60,25 @@ function Home() {
           <Notebook />
         </>
       );
-    } else if (contentFilter === 'Attachments') {
+    } else if (contentFilter === 'Subtopics') {
       return (
         <>
-            <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
+        {subtopicData.length > 0 ?  <TopicCarousel title="Subtopics" topics={subtopicData} /> : <p className="text-gray-500 mt-2">Subtopics are currently empty</p>} 
+
+        </>
+      )
+    }
+    else if (contentFilter === 'Attachments') {
+      return (
+        <>
+          {attachmentData.length > 0 ? <AttachmentCarousel title="Attachments" Attachments={attachmentData}/> : <p className="text-gray-500 mt-2">Attachments are currently empty</p>} <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
+        </>
+      )
+    }
+    else if (contentFilter === 'Links') {
+      return (
+        <>
+        {urls.length > 0 ?  <LinkCarousel title="Links" Links={urls} /> :<> <h2 className="text-lg font-semibold text-darkPlum mb-4">Links</h2><p className="text-gray-500 mt-2">Links are currently empty</p></>}  
         </>
       )
     }
@@ -113,11 +132,30 @@ function Home() {
         console.error("Failed to fetch attachments:", error);
       }
     };
+    const fetchUrlData = async () => {
+      try {
+        const response = await fetch(`/api/urls?topicId=${params.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data)
+        setUrls(data);
+      } catch (error) {
+        console.error("Failed to fetch attachments:", error);
+      }
+    };
 
     fetchTopicData();
     fetchAttachmentData();
     filterAttachments(attachmentData);
-  }, [params.id, attachmentData]);
+    fetchUrlData();
+  }, [params.id, attachmentData, urls]);
 
   useEffect(() => {
     const fetchSubtopics = async () => {
@@ -146,7 +184,7 @@ function Home() {
 
   return (
     <main className="">
-      {deleteModalOpen? <DeleteTopicModal isOpen={deleteModalOpen} topic={topicData} onClose={() => setDeleteModalOpen(false)}/> : <></>}
+      {deleteModalOpen && topicData ? <DeleteTopicModal isOpen={deleteModalOpen} topic={topicData} onClose={() => setDeleteModalOpen(false)}/> : <></>}
       <div className="sm:hidden">
         <>
         <HeaderMobile/>

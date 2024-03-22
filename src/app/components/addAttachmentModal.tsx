@@ -7,6 +7,7 @@ export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen:
   const params = useParams();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [comments, setComments] = useState<string>('');
+  const [name, setName] = useState<string>('');
 
   if (!isOpen) return null;
 
@@ -25,7 +26,7 @@ export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen:
     if (selectedFile && params.id) {
       try {
         const formData = new FormData();
-        formData.append('name', selectedFile.name);
+        formData.append('name', name);
         formData.append('attachmentData', selectedFile); 
         formData.append('comments', comments); 
         formData.append('topicId', params.id);
@@ -59,6 +60,8 @@ export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen:
           <FontAwesomeIcon icon={faTimes} className="text-gray-500" />
         </button>
         <h2 className="text-2xl font-bold mb-4">Add Attachment</h2>
+        <h3 className='text-lg font-semibold'>Name:</h3>
+        <input type ="text" className="w-full mb-4 p-2 border border-gray-300 rounded"  value={name} onChange={(e) => setName(e.target.value)}/>
         <h3 className='text-lg font-semibold'>Attachment:</h3>
         <input
           type="file"

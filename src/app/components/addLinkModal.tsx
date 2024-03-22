@@ -2,11 +2,41 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useParams } from 'next/navigation'
 
 export default function AddAttachmentModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const [link, setLink] = useState(null);
+  const params = useParams();
+  const [link, setLink] = useState('');
+  const [comments, setComments] = useState('');
+  const [name, setName] = useState('');
 
   if (!isOpen) return null;
+  
+  const handleUpload = async () => {
+    if (name && link && params.id) {
+      try {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('url', link); 
+        formData.append('comments', comments); 
+        formData.append('topicId', params.id);
+
+        
+        const response = await fetch('/api/urls', {
+          method: 'POST',
+          body: formData,
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to upload file');
+        }
+
+        onClose();
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+  };
 
   return (
     <>
@@ -16,16 +46,20 @@ export default function AddAttachmentModal({ isOpen, onClose }: { isOpen: boolea
           <FontAwesomeIcon icon={faTimes} className="text-gray-500" />
         </button>
         <h2 className="text-2xl font-bold mb-4">Add Link</h2>
+        <h3 className='text-lg font-semibold'>Name:</h3>
+        <input type ="text" className="w-full mb-4 p-2 border border-gray-300 rounded"  value={name} onChange={(e) => setName(e.target.value)}/>
         <h3 className='text-lg font-semibold'>Link:</h3>
         <input
           type="url"
-        
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder='https://example.com'
           className="w-full mb-4 p-2 border border-gray-300 rounded"
         />
-        <h3 className='text-lg font-semibold'>Description:</h3>
-        <textarea className="w-full mb-4 p-2 border border-gray-300 rounded" />
+        <h3 className='text-lg font-semibold'>Comments:</h3>
+        <textarea  value={comments} onChange={(e) => setComments(e.target.value)} className="w-full mb-4 p-2 border border-gray-300 rounded" />
         
-        <button onClick={onClose} className="bg-buttonColor text-white px-4 py-2 rounded hover:bg-gray-400">
+        <button onClick={handleUpload} className="bg-buttonColor text-white px-4 py-2 rounded hover:bg-gray-400">
           Upload
         </button>
         
