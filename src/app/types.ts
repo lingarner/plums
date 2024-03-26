@@ -6,6 +6,11 @@ export interface Topic {
   parentId: number | null;
 }
 
+export interface TagsOnTopic {
+  tag: Tag;
+  tagId: number;
+}
+
 
 export interface Tag {
   id: number;

@@ -11,7 +11,7 @@ const TopicCarousel: React.FC<{ title: string, type: string, topics: Topic[] }> 
   
 
   useEffect(() => {
-    console.log(topics)
+
 
     const handleResize = () => {
       const screenWidth = window.innerWidth;

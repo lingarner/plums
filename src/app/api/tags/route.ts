@@ -17,7 +17,7 @@ export async function GET(request: Request): Promise<Response> {
     });
 
     // Extract tag names and tag IDs from the response
-    const tagNamesAndIds = tags.map(tag => ({
+    const tagNamesAndIds = tags.map((tag: any) => ({
       name: tag.tag.name,
       id: tag.tagId
     }));
