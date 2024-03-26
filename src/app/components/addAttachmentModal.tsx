@@ -9,6 +9,7 @@ export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen:
   const [comments, setComments] = useState<string>('');
   const [name, setName] = useState<string>('');
 
+  const id = params.id;
   if (!isOpen) return null;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +30,7 @@ export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen:
         formData.append('name', name);
         formData.append('attachmentData', selectedFile); 
         formData.append('comments', comments); 
-        formData.append('topicId', params.id);
+        formData.append('topicId', id.toString()); // Convert id to string
         formData.append('type', selectedFile.type);
         
         const response = await fetch('/api/attachments', {
@@ -39,8 +40,6 @@ export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen:
   
         if (response.ok) {
           const buffer = Buffer.from(await selectedFile.arrayBuffer());
-        
-     
           onAdd(selectedFile.name, buffer, selectedFile.type);
           onClose();
         } else {
@@ -51,6 +50,7 @@ export default function AddAttachmentModal({ isOpen, onClose, onAdd }: { isOpen:
       }
     }
   };
+  
 
   return (
     <>

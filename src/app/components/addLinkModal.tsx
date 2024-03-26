@@ -19,7 +19,7 @@ export default function AddAttachmentModal({ isOpen, onClose }: { isOpen: boolea
         formData.append('name', name);
         formData.append('url', link); 
         formData.append('comments', comments); 
-        formData.append('topicId', params.id);
+        formData.append('topicId', params.id.toString());
 
         
         const response = await fetch('/api/urls', {

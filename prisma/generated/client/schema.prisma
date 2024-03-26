@@ -1,0 +1,79 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+model Topic {
+  id          Int           @id @default(autoincrement())
+  name        String
+  pinned      Boolean       @default(false)
+  urls        Url[]
+  attachments Attachment[]
+  notebook    Notebook?
+  parentId    Int?          @map("parent_id")
+  parent      Topic?        @relation("TopicToTopic", fields: [parentId], references: [id], onDelete: SetNull)
+  subtopics   Topic[]       @relation("TopicToTopic")
+  tags        TagsOnTopic[]
+}
+
+model Tag {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  topics TagsOnTopic[]
+}
+
+
+model TagsOnTopic {
+  topic   Topic @relation(fields: [topicId], references: [id])
+  topicId Int // relation scalar field (used in the `@relation` attribute above)
+  tag     Tag   @relation(fields: [tagId], references: [id])
+  tagId   Int // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([tagId, topicId])
+}
+
+
+model Attachment {
+  id             Int      @id @default(autoincrement())
+  name           String
+  createdAt      DateTime @default(now())
+  comments       String?
+  pinned         Boolean
+  attachmentData Bytes
+  attachmentType String
+  topic          Topic    @relation(fields: [topicId], references: [id])
+  topicId        Int
+}
+
+model Url {
+  id        Int      @id @default(autoincrement())
+  name      String
+  url       String?
+  createdAt DateTime @default(now())
+  comments  String?
+  pinned    Boolean
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  topicId   Int
+}
+
+model Notebook {
+  id      Int             @id @default(autoincrement())
+  title   String
+  entries NotebookEntry[]
+  topic   Topic           @relation(fields: [topicId], references: [id])
+  topicId Int             @unique
+}
+
+model NotebookEntry {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String?
+  pinned     Boolean  @default(false)
+  notebook   Notebook @relation(fields: [notebookId], references: [id])
+  notebookId Int
+}

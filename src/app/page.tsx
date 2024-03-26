@@ -7,20 +7,21 @@ import TopicCarousel from "./components/topicCarousel";
 import './globals.css';
 import TopicList from "./components/topicList";
 import HeaderMobile from "./components/headerMoblie";
-import {Topic} from './types'
+import {Topic, Tag} from './types'
 
 
 function Home() {
-  const [topics, setTopics] = useState([]);
-  const [pinned, setPinned] = useState([]);
-  const [tags, setTags] = useState([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [pinned, setPinned] = useState<Topic[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
 
   const addTopic = (name: string, description: string) => {
     setTopics((prevTopics: Topic[]) => [
       ...prevTopics,
-      { name, description }
+      { id: prevTopics.length + 1, name, description, pinned: false, parentId: null }
     ]);
   };
+  
 
   const fetchTopics = async () => {
     try {
@@ -45,6 +46,7 @@ function Home() {
       }
       const data = await response.json();
       setTags(data);
+
     } catch (error) {
       console.error("Failed to fetch topics:", error);
     }
@@ -90,7 +92,13 @@ function Home() {
           </div>
     
           <AddButton onAdd={addTopic} page = "home"/>
-          <SideMenu menu={true} page="home" topic={null} />
+          <SideMenu
+              menu={true}
+              page="home"
+              topic={null}
+              contentFilter=""
+              onContentFilterChange={() => {}}
+            />
           </div>
         </div>
       </div>

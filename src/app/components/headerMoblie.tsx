@@ -68,7 +68,10 @@ export default function HeaderMobile({ page }: { page: String }) {
 
 
   useEffect(() => {
-    fetchTags();
+    if (params.id){
+      fetchTags();
+    }
+    
   }, [tags]);
   
 

@@ -34,7 +34,7 @@ const TopicList = () => {
     
         {topics.map((topic, index) => (
           <div key={index} > 
-            <TopicCard topic={topic} />
+            <TopicCard displayPin={topic.pinned} topic={topic} />
           </div>
         ))}
       

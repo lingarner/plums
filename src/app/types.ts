@@ -1,15 +1,16 @@
 export interface Topic {
-    id: number;
-    name: string;
-    description: string;
-    pinned: boolean;
-    parentId: number;
-    topic : any;
-  }
+  id: number;
+  name: string;
+  description: string;
+  pinned: boolean;
+  parentId: number | null;
+}
+
 
 export interface Tag {
   id: number;
   name: string;
+  topics: Topic[];
 
 }
 

@@ -11,7 +11,7 @@ const TopicCarousel: React.FC<{ title: string, type: string, topics: Topic[] }> 
   
 
   useEffect(() => {
-    
+    console.log(topics)
 
     const handleResize = () => {
       const screenWidth = window.innerWidth;
@@ -51,7 +51,7 @@ const TopicCarousel: React.FC<{ title: string, type: string, topics: Topic[] }> 
         <Slider {...settings}>
 {topics.map((topic, index) => (
   type === "tag" ? 
-    <TopicCard displayPin={shouldDisplayPins} key={index} topic={topic.topic} /> : 
+    <TopicCard displayPin={shouldDisplayPins} key={index} topic={topic} /> : 
     <TopicCard displayPin={shouldDisplayPins} key={index} topic={topic} />
 ))}
 
@@ -61,7 +61,7 @@ const TopicCarousel: React.FC<{ title: string, type: string, topics: Topic[] }> 
         <div className="flex flex-wrap">
 {topics.map((topic, index) => (
   type === "tag" ? 
-    <TopicCard displayPin={shouldDisplayPins} key={index} topic={topic.topic} /> : 
+    <TopicCard displayPin={shouldDisplayPins} key={index} topic={topic} /> : 
     <TopicCard displayPin={shouldDisplayPins} key={index} topic={topic} />
 ))}
 

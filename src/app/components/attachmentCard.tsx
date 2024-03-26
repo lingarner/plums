@@ -58,19 +58,18 @@ export default function AttachmentCard({ attachment }: { attachment: Attachment 
         <h3 className="w-full overflow-wrap break-words p-2 text-md align-left font-semibold   sm:pt-2 ">{attachment.name}</h3>
         {imageData? (
           <img
-            className="pb-3"
+
             src={`data:image/png;base64,${imageData}`}
             alt={attachment.name}
             onError={handleImageError}
-            className = "object-cover w-full h-[80%]"
+            className = "pb-3 selection:object-cover w-full h-[80%]"
            
           />
         ) :
           <img
-            className="pb-3"
             src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Document_icon_%28the_Noun_Project_27904%29.svg/1024px-Document_icon_%28the_Noun_Project_27904%29.svg.png'
             alt="Default Image"
-            className = "object-contain w-full h-[50%]"
+            className = "pb-3 object-contain w-full h-[50%]"
           />
         }
       </a>

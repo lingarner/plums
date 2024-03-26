@@ -41,7 +41,7 @@ function Home() {
           {pinned.length > 0 ? <AttachmentCarousel title="Pinned" Attachments={pinned}/> :<><h2 className="text-lg font-semibold text-darkPlum mb-4">Pinned</h2> <p className="text-gray-500 mt-2">Pinned is currently empty</p></>}
           {attachmentData.length > 0 ? <AttachmentCarousel title="Attachments" Attachments={attachmentData}/> : <><h2 className="text-lg font-semibold text-darkPlum mb-4">Attachments</h2><p className="text-gray-500 mt-2">Attachments are currently empty</p></>} 
           {urls.length > 0 ?  <LinkCarousel title="Links" Links={urls} /> :<> <h2 className="text-lg font-semibold text-darkPlum mb-4">Links</h2><p className="text-gray-500 mt-2">Links are currently empty</p></>}  
-          {subtopicData.length > 0 ?  <TopicCarousel title="Subtopics" topics={subtopicData} /> : <><h2 className="text-lg font-semibold text-darkPlum mb-4">Subtopics</h2> <p className="text-gray-500 mt-2">Subtopics are currently empty</p></>}
+          {subtopicData.length > 0 ?  <TopicCarousel title="Subtopics" topics={subtopicData} type="subtopic" /> : <><h2 className="text-lg font-semibold text-darkPlum mb-4">Subtopics</h2> <p className="text-gray-500 mt-2">Subtopics are currently empty</p></>}
           
          
          
@@ -63,7 +63,7 @@ function Home() {
     } else if (contentFilter === 'Subtopics') {
       return (
         <>
-        {subtopicData.length > 0 ?  <TopicCarousel title="Subtopics" topics={subtopicData} /> : <p className="text-gray-500 mt-2">Subtopics are currently empty</p>} 
+        {subtopicData.length > 0 ?  <TopicCarousel title="Subtopics" topics={subtopicData} type="subtopic" /> : <p className="text-gray-500 mt-2">Subtopics are currently empty</p>} 
 
         </>
       )
@@ -87,10 +87,20 @@ function Home() {
   const addAttachment = (name: string, attachmentData: any, attachmentType: string) => {
     setAttachmentData((prevAttachments: Attachment[]) => [
       ...prevAttachments,
-      { name, attachmentData, attachmentType }
+      { 
+        id: prevAttachments.length + 1, // Assuming IDs are incremental
+        name,
+        file: "", // Provide appropriate value for file
+        pinned: false, // Set default value for pinned
+        createdAt: new Date().toISOString(), // Set current timestamp
+        attachmentData, 
+        attachmentType,
+        topicId: 0, // Provide appropriate value for topicId
+        comments: "" // Provide appropriate value for comments
+      }
     ]);
   };
-
+  
   const filterAttachments = (attachments: Attachment[]) => {
     const filtered: Attachment[] = attachments.filter((attachment) => attachment.pinned);
     setPinned(filtered);
@@ -170,15 +180,24 @@ function Home() {
           throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
-
-        setSubtopicData(data);
+  
+        // Transforming subtopics data into Topic array
+        const subtopicArray: Topic[] = data.map((subtopic: any) => ({
+          id: subtopic.id,
+          name: subtopic.name,
+          description: subtopic.description,
+          pinned: subtopic.pinned,
+          parentId: subtopic.parentId,
+        }));
+  
+        setSubtopicData(subtopicArray);
       } catch (error) {
-        console.error("Failed to fetch attachments:", error);
+        console.error("Failed to fetch subtopics:", error);
       }
     };
     fetchSubtopics();
-
-  }, [params.id, subtopicData]);
+  }, [params.id]);
+  
  
 
 
@@ -198,7 +217,7 @@ function Home() {
             <AttachmentCarousel title="Pinned" Attachments={pinned}/>
             <AttachmentCarousel title="Attachments" Attachments={attachmentData}/>
             {urls.length > 0 ?  <LinkCarousel title="Links" Links={urls} /> :<> <h2 className="text-lg font-semibold text-darkPlum mb-4">Links</h2><p className="text-gray-500 mt-2">Links are currently empty</p></>}  
-            {subtopicData.length > 0 ?  <TopicCarousel title="Subtopics" topics={subtopicData} /> : <p className="text-gray-500 mt-2">Subtopics are currently empty</p>} 
+            {subtopicData.length > 0 ?  <TopicCarousel type="subtopic" title="Subtopics" topics={subtopicData} /> : <p className="text-gray-500 mt-2">Subtopics are currently empty</p>} 
 
             <Notebook />
           </>
@@ -213,7 +232,7 @@ function Home() {
          
           <div className="flex">
           
-            <div className="fixed left-60 top-1 md:w-3/4 m-16 my-16">
+            <div className="absolute left-60 top-1 md:w-3/4 m-16 my-16">
             
              
 
