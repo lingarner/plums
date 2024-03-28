@@ -175,7 +175,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/marisamiller/GitHub/plums/prisma/generated/client",
+      "value": "/Users/lindz/Documents/BYUI/winter-24/430/plums/prisma/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -184,7 +184,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "darwin",
         "native": true
       }
     ],
