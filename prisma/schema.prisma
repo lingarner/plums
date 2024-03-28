@@ -5,7 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/client"
+  output   = "./prisma/generated/client"
 }
 
 model Topic {
@@ -22,11 +22,10 @@ model Topic {
 }
 
 model Tag {
-  id     Int      @id @default(autoincrement())
-  name   String   @unique
+  id     Int           @id @default(autoincrement())
+  name   String        @unique
   topics TagsOnTopic[]
 }
-
 
 model TagsOnTopic {
   topic   Topic @relation(fields: [topicId], references: [id])
@@ -36,7 +35,6 @@ model TagsOnTopic {
 
   @@id([tagId, topicId])
 }
-
 
 model Attachment {
   id             Int      @id @default(autoincrement())
