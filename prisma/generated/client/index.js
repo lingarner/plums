@@ -21,7 +21,7 @@ const {
   warnOnce,
   defineDmmfProperty,
   Public,
-  detectRuntime,
+  getRuntime
 } = require('./runtime/library.js')
 
 
@@ -31,11 +31,11 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 5.10.2
+ * Prisma Client JS version: 5.11.0
  * Query Engine version: efd2449663b3d73d637ea1fd226bafbcf45b3102
  */
 Prisma.prismaVersion = {
-  client: "5.10.2",
+  client: "5.11.0",
   engine: "efd2449663b3d73d637ea1fd226bafbcf45b3102"
 }
 
@@ -197,7 +197,7 @@ const config = {
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../..",
-  "clientVersion": "5.10.2",
+  "clientVersion": "5.11.0",
   "engineVersion": "efd2449663b3d73d637ea1fd226bafbcf45b3102",
   "datasourceNames": [
     "db"
