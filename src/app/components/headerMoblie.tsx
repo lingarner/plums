@@ -4,7 +4,7 @@ import PlumLogo from '../images/plum_logo.png';
 import { Tag } from '../types';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faBars, faTimes, faCog, faTachometerAlt, faList} from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faBars, faTimes, faCog, faTachometerAlt, faList, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'next/navigation';
 
 
@@ -202,6 +202,16 @@ export default function HeaderMobile({ page, userId}: { page: String, userId: an
                 <FontAwesomeIcon icon={faCog} className="text-xl mr-2" />
                 <p className='text-md'>Settings</p>
               </>
+            </div>
+          </li>
+          <li className="my-4 hover:text-buttonColor ml-10">
+            <div className="flex items-center ">
+              <Link href="/api/auth/logout" className="flex items-center ">
+              <>
+                <FontAwesomeIcon icon={faSignOutAlt} className="text-xl mr-2" />
+                <p className='text-md'>Logout</p>
+              </>
+            </Link>
             </div>
           </li>
         </ul>

@@ -4,6 +4,7 @@ export interface Topic {
   description: string;
   pinned: boolean;
   parentId: number | null;
+  userId?: string;
 }
 
 export interface TagsOnTopic {

@@ -102,7 +102,7 @@ function Home() {
     <main className="">
       <div className="sm:hidden">
         <>
-          <HeaderMobile page="url"/>
+          <HeaderMobile  userId={""} page="url"/>
           <a href={`/topic/${urlData?.topicId}`}>Back to Topic</a>
           <div className="flex flex-col justify-center align-center">
           <h2 className="text-xl font-semibold text-darkPlum mb-2 border-b border-darkPlum">{urlData?.name}</h2>
@@ -122,7 +122,7 @@ function Home() {
       </div>
       <div className="hidden sm:block">
         <div>
-          <SideMenu  onContentFilterChange={() => {}} contentFilter="all" menu={false} page="url" topic={urlData}/>
+          <SideMenu userId={""} onContentFilterChange={() => {}} contentFilter="all" menu={false} page="url" topic={urlData}/>
           <div className="flex">
             <div className="absolute top-10 left-24 flex-col">
             <div><a className=" text-lg text-darkPlum"href={`/topic/${urlData?.topicId}`}>Back to Topic</a></div>

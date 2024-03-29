@@ -48,7 +48,7 @@ export async function POST(request: Request): Promise<Response> {
   try {
     const { topicId, tagName, userId } = await request.json();
 
-    let existingTag = await prisma.tag.findUnique({
+    let existingTag = await prisma.tag.findFirst({
       where: {
         name: tagName,
         userId: userId,

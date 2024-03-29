@@ -104,7 +104,7 @@ function Home() {
       {deleteModalOpen && attachmentData ? <DeleteAttachmentModal isOpen={deleteModalOpen} attachment={attachmentData} onClose={() => setDeleteModalOpen(false)}/> : <></>}
       <div className="sm:hidden">
         <>
-          <HeaderMobile page ="attachment"/>
+          <HeaderMobile  userId={""} page ="attachment"/>
           <a href={`/topic/${attachmentData?.topicId}`}>Back to Topic</a>
           <div className="flex flex-col justify-center align-center">
           <h2 className="text-xl font-semibold text-darkPlum mb-2 border-b border-darkPlum">{attachmentData?.name}</h2>
@@ -124,7 +124,7 @@ function Home() {
       </div>
       <div className="hidden sm:block">
         <div>
-          <SideMenu  onContentFilterChange={() => {}} contentFilter="all" menu={false} page="attachment" topic={attachmentData}/>
+          <SideMenu userId={""} onContentFilterChange={() => {}} contentFilter="all" menu={false} page="attachment" topic={attachmentData}/>
           <div className="flex">
             <div className="absolute top-10 left-24 flex-col">
             <div><a className=" text-lg text-darkPlum"href={`/topic/${attachmentData?.topicId}`}>Back to Topic</a></div>

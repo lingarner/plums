@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faList, faCog, faTachometerAlt, faSearch, faChevronLeft } from '@fortawesome/free-solid-svg-icons'; // Import the arrow icon
+import { faList, faCog, faTachometerAlt, faSearch, faChevronLeft, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // Import the arrow icon
 import Image from 'next/image';
 import PlumLogo from '../images/plum_logo.png';
 import '../globals.css';
@@ -195,12 +195,25 @@ export default function SideMenu({ menu, userId, page, topic, contentFilter, onC
               </>
             </a>
           </li>
+          <li className={`my-4 hover:text-buttonColor ${menuFull ? "ml-10" : "ml-0"}`}>
+            <a href="/api/auth/logout" className={`flex items-center ${menuFull ? "pl-5" : "pl-0"} `}>
+              <>
+                <FontAwesomeIcon icon={faSignOutAlt} className={`text-xl ${menuFull ? "mr-2" : "mr-0"}`} onMouseEnter={() => setSettingsHover(true)}
+                onMouseLeave={() => setSettingsHover(false)}/>
+                {menuFull && <p className='text-md'>Logout</p>}
+                {!menuFull && settingsHover ? 
+                 <div className='absolute left-20 flex justify-center'>
+                  <div className='bg-buttonColor p-2 m-1 text-white rounded'>Logout</div>
+                  </div>: null}
+              </>
+            </a>
+          </li>
         </ul>
 
       </div>
       
       {page === 'topic' && !menuFull &&
-        <div className="h-screen w-40 fixed left-16   flex flex-col items-center justify-between">
+        <div className="h-screen w-44 fixed left-28   flex flex-col items-center justify-between">
           <div>
           <h2 className="pt-10 text-2xl font-semibold text-darkPlum mb-4 w-40 whitespace-pre-wrap break-all">{topic?.name}</h2>
 
@@ -208,7 +221,7 @@ export default function SideMenu({ menu, userId, page, topic, contentFilter, onC
           {tags?.map((tag) => (
                 <div key = {tag.id} className="flex rounded-full bg-buttonColor bg-opacity-10  border-buttonColor border  m-1 p-1">
            
-                <p className="text-sm text-darkPlum opacity-100 whitespace-wrap max-w-[7ch] break-all">{tag.name}</p>
+                <p className="text-sm text-darkPlum opacity-100  max-w-40 whitespace-wrap ">{tag.name}</p>
 
 
                 <button onClick={() => handleDeleteTag(tag.id)} className="ml-1 text-sm text-red-600" >

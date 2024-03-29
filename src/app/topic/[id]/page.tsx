@@ -17,7 +17,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 
 
 function Home() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const params = useParams();
  
   const [pinned, setPinned] = useState<Attachment[]>([]);
@@ -212,7 +212,21 @@ function Home() {
   
  
   
-
+  useEffect(() => {
+   
+    
+    if (!isLoading && !user) {
+    
+      window.location.href = "/";
+      
+    }
+    if (!isLoading && user) {
+      if (topicData && topicData.userId !== user.sub) {
+        window.location.href = "/";
+      }
+    }
+    
+  }, [isLoading, topicData]);
 
   return (
     <main className="">
