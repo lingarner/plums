@@ -5,8 +5,9 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output   = "./prisma/generated/client"
 }
+
+
 
 model Topic {
   id          Int           @id @default(autoincrement())
@@ -17,21 +18,24 @@ model Topic {
   notebook    Notebook?
   parentId    Int?          @map("parent_id")
   parent      Topic?        @relation("TopicToTopic", fields: [parentId], references: [id], onDelete: SetNull)
+  userId      String?
   subtopics   Topic[]       @relation("TopicToTopic")
   tags        TagsOnTopic[]
 }
 
 model Tag {
   id     Int           @id @default(autoincrement())
-  name   String        @unique
+  name   String        
+  userId String?
   topics TagsOnTopic[]
 }
 
 model TagsOnTopic {
+  userId  String?
   topic   Topic @relation(fields: [topicId], references: [id])
-  topicId Int // relation scalar field (used in the `@relation` attribute above)
+  topicId Int
   tag     Tag   @relation(fields: [tagId], references: [id])
-  tagId   Int // relation scalar field (used in the `@relation` attribute above)
+  tagId   Int
 
   @@id([tagId, topicId])
 }

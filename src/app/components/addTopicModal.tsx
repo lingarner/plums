@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useUser } from '@auth0/nextjs-auth0/client';
+
 
 export default function AddTopicModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void ; onAdd: (topic:string, description:string, type:string) => void}) {
+  const { user } = useUser();
   const [topic, setTopic] = useState('');
   const [description, setDescription] = useState('');
   
@@ -16,6 +19,7 @@ export default function AddTopicModal({ isOpen, onClose, onAdd }: { isOpen: bool
         body: JSON.stringify({
           name: topic,
           description: description,
+          userId: user?.sub,
         }),
       });
       if (!response.ok) {

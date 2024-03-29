@@ -13,10 +13,11 @@ import DeleteTopicModal from '../../components/deleteTopicModal';
 import Notebook from "../../components/notebook";
 import TopicCarousel from "@/app/components/topicCarousel";
 import LinkCarousel from "@/app/components/LinkCarousel";
-
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 
 function Home() {
+  const { user } = useUser();
   const params = useParams();
  
   const [pinned, setPinned] = useState<Attachment[]>([]);
@@ -32,6 +33,7 @@ function Home() {
   };
 
 
+  
   // Function to render content based on contentFilter
   const renderContent = () => {
     if (contentFilter === 'All') {
@@ -100,6 +102,12 @@ function Home() {
       }
     ]);
   };
+  const addSubtopic = (name: string, description: string) => {
+    setSubtopicData((prevTopics: Topic[]) => [
+      ...prevTopics,
+      { id: prevTopics.length + 1, name, description, pinned: false, parentId: null }
+    ]);
+  };
   
   const filterAttachments = (attachments: Attachment[]) => {
     const filtered: Attachment[] = attachments.filter((attachment) => attachment.pinned);
@@ -120,6 +128,7 @@ function Home() {
         }
         const data = await response.json();
         setTopicData(data);
+        
       } catch (error) {
         console.error("Failed to fetch topics:", error);
       }
@@ -165,8 +174,11 @@ function Home() {
     fetchAttachmentData();
     filterAttachments(attachmentData);
     fetchUrlData();
+   
+    
   }, [params.id, attachmentData, urls]);
 
+  
   useEffect(() => {
     const fetchSubtopics = async () => {
       try {
@@ -196,9 +208,10 @@ function Home() {
       }
     };
     fetchSubtopics();
-  }, [params.id]);
+  }, [params.id, subtopicData]);
   
  
+  
 
 
   return (
@@ -206,7 +219,7 @@ function Home() {
       {deleteModalOpen && topicData ? <DeleteTopicModal isOpen={deleteModalOpen} topic={topicData} onClose={() => setDeleteModalOpen(false)}/> : <></>}
       <div className="sm:hidden">
         <>
-        <HeaderMobile page={"topic"}/>
+        <HeaderMobile userId={user?.sub} page={"topic"}/>
         {topicData && (
           <>
             <div className="flex justify-between items-center">
@@ -228,7 +241,7 @@ function Home() {
 
       <div className="hidden sm:block">
         <div>
-          <SideMenu menu={false} page="topic" topic={topicData} contentFilter={contentFilter} onContentFilterChange={handleContentFilterChange} />
+          <SideMenu userId={user?.sub} menu={false} page="topic" topic={topicData} contentFilter={contentFilter} onContentFilterChange={handleContentFilterChange} />
          
           <div className="flex">
           

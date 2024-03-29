@@ -10,7 +10,9 @@ import TopicMenu from './TopicMenu';
 import { Topic, Tag } from '../types';
 import DeleteTopicModal from './deleteTopicModal';
 
+
 interface SideMenuProps {
+  userId: any;
   menu: boolean;
   page: string;
   topic: any;
@@ -18,7 +20,7 @@ interface SideMenuProps {
   onContentFilterChange: (filter: string) => void;
 }
 
-export default function SideMenu({ menu, page, topic, contentFilter, onContentFilterChange }: SideMenuProps) {
+export default function SideMenu({ menu, userId, page, topic, contentFilter, onContentFilterChange }: SideMenuProps) {
 
   const [menuFull, setMenuFull] = useState(menu);
   const [searchHover, setSearchHover] = useState(false);
@@ -33,13 +35,13 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
   const fetchTags = async () => {
     try {
       if (topic) {
-        const response = await fetch(`/api/tags?topicId=${topic.id}`);
+        const response = await fetch(`/api/tags?topicId=${topic.id}&userId=${topic.userId}`);
         const data = await response.json();
 
         setTags(data);
       } 
     } catch (error) {
-
+      console.error('Error fetching tags:', error);
     }
   };
   
@@ -55,6 +57,7 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            userId,
             topicId: topic.id,
             tagName: tagInput.trim(),
           }),
@@ -123,7 +126,7 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
     <>
     {menuOpen? <DeleteTopicModal isOpen={menuOpen} topic={topic} onClose={() => setMenuOpen(false)}/> : <></>}
    
-    <div className="flex h-screen">
+    <div className="fixed flex h-screen">
       
       <div className={`h-full bg-sideMenu bg-opacity-20 ${menuFull ? 'w-1/6 ' : 'w-20'} ${page != 'topic'? 'fixed' : ''} flex flex-col items-center justify-start font-nunito`}>
 
@@ -199,12 +202,15 @@ export default function SideMenu({ menu, page, topic, contentFilter, onContentFi
       {page === 'topic' && !menuFull &&
         <div className="h-screen w-40 fixed left-16   flex flex-col items-center justify-between">
           <div>
-          <h2 className="pt-10 text-2xl font-semibold text-darkPlum mb-4 ">{topic?.name}</h2>
+          <h2 className="pt-10 text-2xl font-semibold text-darkPlum mb-4 w-40 whitespace-pre-wrap break-all">{topic?.name}</h2>
+
           <div className='absolute top-20 flex flex-wrap'>
           {tags?.map((tag) => (
                 <div key = {tag.id} className="flex rounded-full bg-buttonColor bg-opacity-10  border-buttonColor border  m-1 p-1">
            
-                <p className="text-sm text-darkPlum opacity-100">{tag.name}</p>
+                <p className="text-sm text-darkPlum opacity-100 whitespace-wrap max-w-[7ch] break-all">{tag.name}</p>
+
+
                 <button onClick={() => handleDeleteTag(tag.id)} className="ml-1 text-sm text-red-600" >
                   X
                 </button>

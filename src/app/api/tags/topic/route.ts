@@ -3,10 +3,14 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function GET(request: Request): Promise<Response> {
+  const url = new URL(request.url);
+  const userId = url.searchParams.get("userId");
+
   try {
     // Fetch tags that have associated topics
     const tagsWithTopics = await prisma.tag.findMany({
       where: {
+        userId: userId,
         topics: {
           some: {} // Filter to only include tags with at least one associated topic
         }

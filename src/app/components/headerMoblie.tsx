@@ -8,7 +8,9 @@ import { faSearch, faBars, faTimes, faCog, faTachometerAlt, faList} from '@forta
 import { useParams } from 'next/navigation';
 
 
-export default function HeaderMobile({ page }: { page: String }) {
+
+export default function HeaderMobile({ page, userId}: { page: String, userId: any }) {
+
   const [imageData, setImageData] = useState(''); {
   const params = useParams();
   
@@ -21,7 +23,7 @@ export default function HeaderMobile({ page }: { page: String }) {
 
     try {
       if (params) {
-        const response = await fetch(`/api/tags?topicId=${params.id}`);
+        const response = await fetch(`/api/tags?topicId=${params.id}&userId=${userId}`);
         const data = await response.json();
 
         setTags(data);
@@ -47,6 +49,7 @@ export default function HeaderMobile({ page }: { page: String }) {
           body: JSON.stringify({
             topicId: params.id,
             tagName: tagInput.trim(),
+            userId
           }),
         });
   
@@ -72,7 +75,7 @@ export default function HeaderMobile({ page }: { page: String }) {
       fetchTags();
     }
     
-  }, [tags]);
+  }, []);
   
 
   // Function to handle removing tags

@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import SideMenu from "./components/Menu";
@@ -7,9 +7,13 @@ import TopicCarousel from "./components/topicCarousel";
 import './globals.css';
 import TopicList from "./components/topicList";
 import HeaderMobile from "./components/headerMoblie";
-import { Topic, Tag } from './types'
+import { Topic, Tag } from './types';
+import { useUser } from '@auth0/nextjs-auth0/client';
+
 
 function Home() {
+  const { user } = useUser();
+
   const [topics, setTopics] = useState<Topic[]>([]);
   const [pinned, setPinned] = useState<Topic[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -23,8 +27,11 @@ function Home() {
   };
 
   const fetchTopics = async () => {
+    if (!user) {
+      return;
+    }
     try {
-      const response = await fetch("/api/topics");
+      const response = await fetch("/api/topics?userId=" + user?.sub); 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
@@ -37,28 +44,24 @@ function Home() {
   };
 
   const fetchTagsAndTopics = async () => {
+    if (!user) {
+      return;
+      
+    }
+    
     try {
-      const response = await fetch("/api/tags/topic");
+      const response = await fetch("/api/tags/topic?userId=" + user?.sub); 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
       const data = await response.json();
       setTags(data);
    
-      console.log(data[0]);
-
-      // Initialize an array to hold the tag content
       const tagContentArray: Topic[] = [];
-
-   
       data[0].topics.forEach((topic: any) => {
-        console.log(topic.topic);
         tagContentArray.push(topic.topic);
       });
-
       setTagContent(tagContentArray);
-
-
     } catch (error) {
       console.error("Failed to fetch topics:", error);
     }
@@ -72,13 +75,34 @@ function Home() {
   useEffect(() => {
     fetchTopics();
     fetchTagsAndTopics();
-  }, []);
+    filterTopics(topics);
+  }, [user, topics]);
+
+  
+
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="bg-sideMenu bg-opacity-20 rounded-lg p-8 shadow-md">
+          <div className="text-center">
+            <p className="mb-4 text-lg text-darkPlum">Welcome to Plums! </p>
+            <a href="/api/auth/login" className="inline-block px-4 py-2 bg-buttonColor text-white rounded hover:bg-darkPlum-dark transition duration-300 ease-in-out">Login</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  
+  
+
+
 
   return (
     <main className="">
       <div className="sm:hidden">
         <>
-          <HeaderMobile page="home" />
+          <HeaderMobile userId={user?.sub} page="home" />
           <TopicList topics={topics}/>
           {tags && tags.map((tag) => {
                 const tagContentArray: Topic[] = [];
@@ -100,13 +124,15 @@ function Home() {
       <div className="hidden sm:block">
         <div>
           <div className="flex">
+          <div className="absolute left-56 top-1 p-5  text-darkPlum font-semibold text-xl">{user && user.name ? `Welcome ${user.name[0]}!` : ""}</div>
             <div className="absolute left-60 top-6 md:w-3/4 m-16 my-16">
+              <a href="/api/auth/logout">Logout</a>
+              
               <TopicCarousel type="pinned" topics={pinned} title="Pinned" />
               <TopicCarousel type="all" topics={topics} title="All Topics" />
               {tags && tags.map((tag) => {
                 const tagContentArray: Topic[] = [];
                 tag.topics.forEach((topic: any) => {
-                  console.log(topic.topic);
                   tagContentArray.push(topic.topic);
                 });
               
@@ -119,6 +145,7 @@ function Home() {
             </div>
             <AddButton onAdd={addTopic} page="home" />
             <SideMenu
+              userId = {user?.sub}
               menu={true}
               page="home"
               topic={null}

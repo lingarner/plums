@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'next/navigation';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function AddSubtopicModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void ; onAdd: (topic:string, description:string, type:string) => void}) {
+  const { user } = useUser();
   const [topic, setTopic] = useState('');
   const [description, setDescription] = useState('');
   const params = useParams();
@@ -19,6 +21,7 @@ export default function AddSubtopicModal({ isOpen, onClose, onAdd }: { isOpen: b
         body: JSON.stringify({
           name: topic,
           parentId: params.id,
+          userId: user?.sub,
 
         }),
       });

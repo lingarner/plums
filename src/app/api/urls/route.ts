@@ -9,6 +9,7 @@ export async function GET(request: Request) {
   
   try {
     const attachments = await prisma.url.findMany({
+  
       where: {
         topicId: topicId,
       },

@@ -5,12 +5,14 @@ const prisma = new PrismaClient();
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const parentId = Number(url.searchParams.get("parentId"));
+  const userId = url.searchParams.get("userId");
 
   try {
  
     const topics = await prisma.topic.findMany({
       where: {
         parentId: parentId,
+        userId
       },
     });
 

@@ -2,9 +2,17 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const userId = url.searchParams.get("userId");
+  
   try {
-    const topics = await prisma.topic.findMany();
+    const topics = await prisma.topic.findMany({
+      where: {
+        userId: userId,
+        parentId: null
+      }
+    });
 
     return new Response(JSON.stringify(topics), {
       status: 200,
@@ -26,10 +34,11 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { name } = await request.json();
+    const { name, userId } = await request.json();
     const newTopic = await prisma.topic.create({
       data: {
-        name
+        name,
+        userId
       },
     });
     return new Response(JSON.stringify(newTopic), {
