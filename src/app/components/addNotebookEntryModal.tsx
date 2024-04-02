@@ -5,8 +5,8 @@ import Notebook from '../components/editor';
 
 
 export default function AddTopicModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void ; onAdd: (topic:string, description:string, type:string) => void}) {
-  const [topic, setTitle] = useState('');
-  const [description, setContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   
   const handleSubmit = async () => {
     try {
@@ -16,22 +16,22 @@ export default function AddTopicModal({ isOpen, onClose, onAdd }: { isOpen: bool
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: topic,
-          description: description,
+          name: title,
+          description: content,
         }),
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
   
-      setTopic('');
-      setDescription('');
+      setTitle('');
+      setContent('');
       
   
-      onAdd(topic, description, "");
+      onAdd(title, content, "");
       onClose();
     } catch (error) {
-      console.error("Failed to add topic:", error);
+      console.error("Failed to add note:", error);
     }
   };
   
@@ -48,7 +48,7 @@ export default function AddTopicModal({ isOpen, onClose, onAdd }: { isOpen: bool
 
         <h2 className="text-2xl font-bold mb-4">Add New Note</h2>
         <h3 className='text-lg font-semibold'>Note Title:</h3>
-        <input value={title} onChange={(e) => setDescription(e.target.value)} title="Note Title" type="text" className="w-full mb-4 p-2 border border-gray-300 rounded" />
+        <input value={title} onChange={(e) => setTitle(e.target.value)} title="Note Title" type="text" className="w-full mb-4 p-2 border border-gray-300 rounded" />
 
         <Notebook/>
       
