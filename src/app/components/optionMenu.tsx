@@ -6,12 +6,14 @@ import AddTopicModal from './addTopicModal';
 import AddAttachmentModal from './addAttachmentModal';
 import AddLinkModal from './addLinkModal';
 import AddSubtopicModal from './addSubtopicModal';
+import AddNotebookEntryModal from './addNotebookEntryModal';
 
 export default function OptionMenu({ menuType, onAdd }: { onAdd: (topic: string, description: string, type: string) => void, menuType: string }) {
   const [addTopicOpen, setAddTopicOpen] = useState(false);
   const [addAttachmentOpen, setAddAttachmentOpen] = useState(false);
   const [addLinkOpen, setAddLinkOpen] = useState(false);
   const [addSubtopicOpen, setAddSubtopicOpen] = useState(false);
+  const [addNotebookEntryOpen, setAddNotebookEntryOpen] = useState(false);
 
   const openTopic = () => {
     setAddTopicOpen(true);
@@ -65,10 +67,12 @@ export default function OptionMenu({ menuType, onAdd }: { onAdd: (topic: string,
                   </button>
               </li>
               <li>
+                <button onClick={() => setAddNotebookEntryOpen(true)}>
                   <p className="flex items-center space-x-2 py-2 px-4 hover:bg-gray-100 rounded-md">
                     <FontAwesomeIcon icon={faNoteSticky} />
                     <span className="whitespace-nowrap text-lg w-[120px]">Add To Notebook</span>
                   </p>
+                </button>
               </li>
               
             </ul>
@@ -80,6 +84,7 @@ export default function OptionMenu({ menuType, onAdd }: { onAdd: (topic: string,
       <AddTopicModal onAdd={onAdd} isOpen={addTopicOpen}  onClose={closeTopic} />
       <AddAttachmentModal onAdd={onAdd} isOpen={addAttachmentOpen} onClose={() => setAddAttachmentOpen(false)} />
       <AddLinkModal isOpen={addLinkOpen} onClose={() => setAddLinkOpen(false)} />
+      <AddNotebookEntryModal onAdd={onAdd} isOpen={addNotebookEntryOpen} onClose={() => setAddNotebookEntryOpen(false)} />
     </>
   );
 }

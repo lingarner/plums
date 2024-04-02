@@ -25,10 +25,7 @@ function MyEditor() {
   ];
 
   return (
-    <div className="w-{60%} h-full flex flex-col">
-      <div className="flex-shrink-0 h-16 bg-gray-200 flex items-center px-4">
-        <span className="text-lg font-semibold">My Document</span>
-      </div>
+    <div className="w-{inherit} h-full flex flex-col">
       <div className="flex-grow p-4">
         <ReactQuill
           className="h-full w-full border rounded"
