@@ -1,22 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { NotebookEntry } from '@prisma/client';
-import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-interface MyEditorProps {
-  initalContent: NotebookEntry[]
-}
-
-const MyEditor: React.FC<MyEditorProps> = ({ initalContent }) => {
+const MyEditor = () => {
   const [editorValue, setEditorValue] = useState<string>('');
-
-  useEffect(() => {
-    if (initalContent.length > 0) {
-      setEditorValue(initalContent[].content); // Set initial content from the first entry
-    }
-  }, [initalContent]);
-
 
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'], // toggled buttons
