@@ -19,9 +19,7 @@ function Home() {
   useEffect(() => {
     const fetchAttachmentData = async () => {
       try {
-
-        const response = await fetch(`/api/attachments/attachment?
-        attachmentId=${params.id}`, {
+        const response = await fetch(`/api/attachments/attachment?attachmentId=${params.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -31,9 +29,6 @@ function Home() {
           throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
-
-        
-
 
 
         setAttachmentData(data);
@@ -54,7 +49,7 @@ function Home() {
   
   }, [params.id]);
   
-
+console.log(data)
   const onSave = async () => {
 
     try {
@@ -106,6 +101,7 @@ function Home() {
     }
   };
 
+  console.log(attachmentData)
   return (
     <main className="">
       {deleteModalOpen && attachmentData ? <DeleteAttachmentModal isOpen={deleteModalOpen} attachment={attachmentData} onClose={() => setDeleteModalOpen(false)}/> : <></>}
