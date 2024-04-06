@@ -6,11 +6,10 @@ import { useParams } from 'next/navigation'
 
 const MyEditor = (entry: any) => {
   const [editorValue, setEditorValue] = useState<any | undefined>(undefined);
-console.log(entry)
+
 useEffect(() => {
   setEditorValue(entry.entry.content)
 }, [entry])  
-console.log(editorValue)
 
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'], // toggled buttons
