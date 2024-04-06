@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { NotebookEntry } from '@prisma/client';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useParams } from 'next/navigation'
 
-const MyEditor = () => {
-  const [editorValue, setEditorValue] = useState<string>('');
+const MyEditor = (entry: any) => {
+  const [editorValue, setEditorValue] = useState<any | undefined>(undefined);
+console.log(entry)
+useEffect(() => {
+  setEditorValue(entry.entry.content)
+}, [entry])  
+console.log(editorValue)
 
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -22,16 +28,19 @@ const MyEditor = () => {
     [{ 'font': [] }],
     [{ 'align': [] }],
 
-    ['clean'] // remove formatting button
-  ];
+    ['clean'],
+  ]
+
 
   return (
     <div className="w-{60%} h-full flex flex-col">
       <div className="flex-shrink-0 h-16 bg-gray-200 flex items-center px-4">
-        <span className="text-lg font-semibold">My Document</span>
+        <span className="text-lg font-semibold">{entry.entry.title}</span>
       </div>
       <div className="flex-grow p-4">
-        <ReactQuill
+        {
+          editorValue !== undefined?
+          <ReactQuill
           className="h-full w-full border rounded"
           value={editorValue}
           onChange={(value) => setEditorValue(value)}
@@ -39,8 +48,11 @@ const MyEditor = () => {
             toolbar: toolbarOptions,
           }}
           theme="snow"
-        />
+        />:""
+          
+        }
       </div>
+      <button>Save</button>
     </div>
   );
 }

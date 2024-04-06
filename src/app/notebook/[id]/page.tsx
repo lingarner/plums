@@ -10,10 +10,35 @@ import DeleteTopicModal from '../../components/deleteTopicModal';
 import MyEditor from "@/app/components/editor";
 
 
-function OldNote() {
-  const { user, isLoading } = useUser();
+function EditNote() {
   const params = useParams();
- 
+  const { user, isLoading } = useUser();
+  const [content, setContent] = useState<any>('');
+
+  const fetchEntryContent = async () => {
+    try {
+      const response = await fetch("/api/notebookEntries?entryId=" + params.id, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }); 
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      console.log(response);
+      const data = await response.json();
+      setContent(data);
+      
+    } catch (error) {
+      console.error("Failed to fetch entry content:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEntryContent();
+  }, []);
+  
 
   return ( 
     <main className="">
@@ -39,7 +64,7 @@ function OldNote() {
           <div className="flex">
 
             <div className="absolute left-60 top-1 md:w-3/4 m-16 my-16">
-                <MyEditor/>
+                <MyEditor entry={content}/>
             </div>
           </div>
          
@@ -49,4 +74,4 @@ function OldNote() {
   );
 }
 
-export default OldNote;
+export default EditNote;

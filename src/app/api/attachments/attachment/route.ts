@@ -4,11 +4,11 @@ const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
-    const attachmentId = url.searchParams.get("attachmentId");
+    const topicId = url.searchParams.get("topicId");
     
-    const attachmentIdNumber = parseInt(attachmentId ?? "", 10);
+    const topicIdNumber = parseInt(topicId ?? "", 10);
 
-    if (!attachmentIdNumber || isNaN(attachmentIdNumber)) {
+    if (!topicIdNumber || isNaN(topicIdNumber)) {
             return new Response(JSON.stringify({ error: "Topic ID is required and must be a number" }), {
                 status: 400,
                 headers: {
@@ -18,9 +18,9 @@ export async function GET(request: Request) {
     }
 
     try {
-        const topic = await prisma.attachment.findUnique({
+        const topic = await prisma.topic.findUnique({
             where: {
-                id: attachmentIdNumber,
+                id: topicIdNumber,
             }
         });
         

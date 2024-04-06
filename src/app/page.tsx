@@ -79,7 +79,7 @@ function Home() {
     fetchTopics();
     fetchTagsAndTopics();
     filterTopics(topics);
-  }, [user, topics]);
+  }, [user]);
 
   
 

@@ -19,7 +19,9 @@ function Home() {
   useEffect(() => {
     const fetchAttachmentData = async () => {
       try {
-        const response = await fetch(`/api/attachments/attachment?attachmentId=${params.id}`, {
+
+        const response = await fetch(`/api/attachments/attachment?
+        attachmentId=${params.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -29,6 +31,11 @@ function Home() {
           throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
+
+        
+
+
+
         setAttachmentData(data);
   
         // Set the initial value of comments from the fetched data
@@ -105,6 +112,7 @@ function Home() {
       <div className="sm:hidden">
         <>
           <HeaderMobile  userId={""} page ="attachment"/>
+
           <a href={`/topic/${attachmentData?.topicId}`}>Back to Topic</a>
           <div className="flex flex-col justify-center align-center">
           <h2 className="text-xl font-semibold text-darkPlum mb-2 border-b border-darkPlum">{attachmentData?.name}</h2>

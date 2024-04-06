@@ -42,12 +42,15 @@ function Home() {
         
           {pinned.length > 0 ? <AttachmentCarousel title="Pinned" Attachments={pinned}/> :<><h2 className="text-lg font-semibold text-darkPlum mb-4">Pinned</h2> <p className="text-gray-500 mt-2">Pinned is currently empty</p></>}
           {attachmentData.length > 0 ? <AttachmentCarousel title="Attachments" Attachments={attachmentData}/> : <><h2 className="text-lg font-semibold text-darkPlum mb-4">Attachments</h2><p className="text-gray-500 mt-2">Attachments are currently empty</p></>} 
-          {urls.length > 0 ?  <LinkCarousel title="Links" Links={urls} /> :<> <h2 className="text-lg font-semibold text-darkPlum mb-4">Links</h2><p className="text-gray-500 mt-2">Links are currently empty</p></>}  
+          {urls.length > 0 ?  <LinkCarousel title="Links" Links={urls} /> :<> <h2 className="text-lg font-semibold text-darkPlum mb-4">Links</h2><p className="text-gray-500 mt-2">Links are currently empty</p></>} 
+
           {subtopicData.length > 0 ?  <TopicCarousel title="Subtopics" topics={subtopicData} type="subtopic" /> : <><h2 className="text-lg font-semibold text-darkPlum mb-4">Subtopics</h2> <p className="text-gray-500 mt-2">Subtopics are currently empty</p></>}
           
          
-         
-          <Notebook />
+         {
+           
+           <Notebook topicId={params.id}/>
+         }
         </>
       )
     } else if (contentFilter === 'Pinned') {
@@ -108,6 +111,7 @@ function Home() {
       { id: prevTopics.length + 1, name, description, pinned: false, parentId: null }
     ]);
   };
+
   
   const filterAttachments = (attachments: Attachment[]) => {
     const filtered: Attachment[] = attachments.filter((attachment) => attachment.pinned);
@@ -176,7 +180,7 @@ function Home() {
     fetchUrlData();
    
     
-  }, [params.id, attachmentData, urls]);
+  }, [attachmentData.length]);
 
   
   useEffect(() => {
@@ -208,7 +212,7 @@ function Home() {
       }
     };
     fetchSubtopics();
-  }, [params.id, subtopicData]);
+  }, [subtopicData.length]);
   
  
   
@@ -249,7 +253,7 @@ function Home() {
             <Notebook />
           </>
         )}
-        <AddButton onAdd={addAttachment} page="topic"/>
+        <AddButton onAdd={addSubtopic} page="topic"/>
         </>
       </div>
 
@@ -269,7 +273,7 @@ function Home() {
                 </>
               )}
             </div>
-            <AddButton onAdd={addAttachment} page="topic"/>
+            <AddButton onAdd={addSubtopic} page="topic"/>
           </div>
         </div>
       </div>

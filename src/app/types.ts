@@ -49,3 +49,13 @@ export interface NotebookEntry {
   content: string;
   pinned: boolean;
 }
+
+
+export interface Notebook {
+  id: number;
+  title: string;
+  topicId: number;
+  entries: NotebookEntry[];
+}
+
+
