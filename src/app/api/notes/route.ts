@@ -4,18 +4,27 @@ const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const entryIdString = url.searchParams.get("entryId");
-  const entryId = entryIdString ? parseInt(entryIdString, 10) : NaN;
+  const topicIdString = url.searchParams.get("topicId");
+  const topicId = topicIdString ? parseInt(topicIdString, 10) : NaN;
 
   try {
+    
+    // Construct the query based on topicId availability
+    const query = topicId
+      ? { where: { id: topicId } }
+      : {}; // Empty query if topicId is null
+
     // Fetch the notebook based on the topicId
-    const notebookEntry = await prisma.notebookEntry.findUnique({
+    const notebook = await prisma.notebook.findUnique({
       where: {
-        id: entryId,
+        topicId: topicId,
+      },
+      include: {
+        entries: true
       }
     });
   
-    return new Response(JSON.stringify(notebookEntry), {
+    return new Response(JSON.stringify(notebook), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +32,7 @@ export async function GET(request: Request) {
     });
   } catch (e) {
     console.error(e);
-    return new Response(JSON.stringify({ error: "Unable to fetch entry" }), {
+    return new Response(JSON.stringify({ error: "Unable to fetch topics" }), {
       status: 500,
       headers: {
         "Content-Type": "application/json",
