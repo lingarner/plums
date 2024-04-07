@@ -5,10 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  
 }
-
-
 
 model Topic {
   id          Int           @id @default(autoincrement())
@@ -16,7 +13,7 @@ model Topic {
   pinned      Boolean       @default(false)
   urls        Url[]
   attachments Attachment[]
-  notebook    Notebook?
+  notebook    NotebookEntry[]
   parentId    Int?          @map("parent_id")
   parent      Topic?        @relation("TopicToTopic", fields: [parentId], references: [id], onDelete: SetNull)
   userId      String?
@@ -64,19 +61,11 @@ model Url {
   topicId   Int
 }
 
-model Notebook {
-  id      Int             @id @default(autoincrement())
-  title   String
-  entries NotebookEntry[]
-  topic   Topic           @relation(fields: [topicId], references: [id])
-  topicId Int             @unique
-}
-
 model NotebookEntry {
   id         Int      @id @default(autoincrement())
   title      String
   content    String?
   pinned     Boolean  @default(false)
-  notebook   Notebook @relation(fields: [notebookId], references: [id])
-  notebookId Int
+  topic      Topic  @relation(fields: [topicId], references: [id])
+  topicId    Int
 }

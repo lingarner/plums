@@ -19,7 +19,7 @@ function Home() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [tagContent, setTagContent] = useState<Topic[]>([]); 
 
-  const addTopic = (name: string, description: string) => {
+  const addTopic = (id : number, name: string, description: string) => {
     setTopics((prevTopics: Topic[]) => [
       ...prevTopics,
       { id: prevTopics.length + 1, name, description, pinned: false, parentId: null }
