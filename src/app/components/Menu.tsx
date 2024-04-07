@@ -66,6 +66,7 @@ export default function SideMenu({ menu, userId, page, topic, contentFilter, onC
         if (response.ok) {
           // Tag created successfully
           const newTag = await response.json();
+          
         
         } else {
           // Handle error response
@@ -77,12 +78,15 @@ export default function SideMenu({ menu, userId, page, topic, contentFilter, onC
       setTagInput('');
     }
     setAddTag(false);
+    fetchTags();
   };
 
 
   useEffect(() => {
-    fetchTags();
-  });
+    if (topic) {
+      fetchTags();
+    }
+  }, [topic]);
   
 
   // Function to handle removing tags
@@ -112,6 +116,7 @@ export default function SideMenu({ menu, userId, page, topic, contentFilter, onC
     } catch (error) {
       console.error('Error deleting tag:', error);
     }
+    fetchTags();
   };
   
 
