@@ -4,7 +4,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'next/navigation';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
-export default function AddSubtopicModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void ; onAdd: (topic:string, description:string, type:string) => void}) {
+export default function AddSubtopicModal({ isOpen, onClose, onAdd }: { isOpen: boolean; onClose: () => void ; onAdd: (id:number, topic:string, description:string, type:string) => void}) {
   const { user } = useUser();
   const [topic, setTopic] = useState('');
   const [description, setDescription] = useState('');
@@ -28,12 +28,12 @@ export default function AddSubtopicModal({ isOpen, onClose, onAdd }: { isOpen: b
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-  
+      let data = await response.json();
       setTopic('');
       setDescription('');
       
   
-      onAdd(topic, description, "");
+      onAdd(data.id,topic, description, "");
       onClose();
     } catch (error) {
       console.error("Failed to add topic:", error);

@@ -89,19 +89,19 @@ function Home() {
     }
   };
 
-  const addAttachment = (name: string, attachmentData: any, attachmentType: string) => {
+  const addAttachment = (id: number, name: string, attachmentData: any, attachmentType: string) => {
     setAttachmentData((prevAttachments: Attachment[]) => [
       ...prevAttachments,
       { 
-        id: prevAttachments.length + 1, // Assuming IDs are incremental
+        id: id,
         name,
         file: "", // Provide appropriate value for file
-        pinned: false, // Set default value for pinned
-        createdAt: new Date().toISOString(), // Set current timestamp
+        pinned: false,
+        createdAt: new Date().toISOString(), 
         attachmentData, 
         attachmentType,
-        topicId: 0, // Provide appropriate value for topicId
-        comments: "" // Provide appropriate value for comments
+        topicId: 0, 
+        comments: "" 
       }
     ]);
   };
@@ -118,43 +118,78 @@ function Home() {
     setPinned(filtered);
   }; 
 
-  useEffect(() => {
-    const fetchTopicData = async () => {
-      try {
-        const response = await fetch(`/api/topics/topic?topicId=${params.id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const data = await response.json();
-        setTopicData(data);
-        
-      } catch (error) {
-        console.error("Failed to fetch topics:", error);
+  const fetchAttachmentData = async () => {
+    try {
+      const response = await fetch(`/api/attachments?topicId=${params.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
       }
-    };
+      const data = await response.json();
+      setAttachmentData(data);
+    } catch (error) {
+      console.error("Failed to fetch attachments:", error);
+    }
+  }; 
 
-    const fetchAttachmentData = async () => {
-      try {
-        const response = await fetch(`/api/attachments?topicId=${params.id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const data = await response.json();
-        setAttachmentData(data);
-      } catch (error) {
-        console.error("Failed to fetch attachments:", error);
+  useEffect(() => {
+    fetchTopicData();
+  }, []);
+  
+  const fetchSubtopics = async () => {
+    try {
+      const response = await fetch(`/api/topics/subtopic?parentId=${params.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
       }
-    };
+      const data = await response.json();
+
+      // Transforming subtopics data into Topic array
+      const subtopicArray: Topic[] = data.map((subtopic: any) => ({
+        id: subtopic.id,
+        name: subtopic.name,
+        description: subtopic.description,
+        pinned: subtopic.pinned,
+        parentId: subtopic.parentId,
+      }));
+
+      setSubtopicData(subtopicArray);
+    } catch (error) {
+      console.error("Failed to fetch subtopics:", error);
+    }
+  };
+  const fetchTopicData = async () => {
+    try {
+      const response = await fetch(`/api/topics/topic?topicId=${params.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      const data = await response.json();
+      setTopicData(data);
+      
+    } catch (error) {
+      console.error("Failed to fetch topics:", error);
+    }
+  };
+
+  useEffect(() => {
+    
+
+    
     const fetchUrlData = async () => {
       try {
         const response = await fetch(`/api/urls?topicId=${params.id}`, {
@@ -174,13 +209,15 @@ function Home() {
       }
     };
 
-    fetchTopicData();
+    
     fetchAttachmentData();
     filterAttachments(attachmentData);
     fetchUrlData();
+    fetchSubtopics();
    
     
   }, [attachmentData.length]);
+
 
   
   useEffect(() => {
@@ -212,7 +249,7 @@ function Home() {
       }
     };
     fetchSubtopics();
-  }, [subtopicData.length]);
+  }, [subtopicData]);
   
  
   
@@ -231,6 +268,7 @@ function Home() {
     }
     
   }, [isLoading, topicData]);
+
 
   return (
     <main className="">

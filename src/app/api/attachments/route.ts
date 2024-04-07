@@ -1,8 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../../../prisma/prismaClient";
 
-const prisma = new PrismaClient();
-
-// GET route to retrieve attachments by topicId
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const topicId = Number(url.searchParams.get("topicId"));
