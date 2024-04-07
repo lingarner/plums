@@ -8,7 +8,7 @@ import DeleteAttachmentModal from "../../components/deleteAttachmentModal";
 import { Attachment } from "../../types";
 
 
-
+\
 function Home() {
   const params = useParams();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -49,7 +49,7 @@ function Home() {
   
   }, [params.id]);
   
-console.log(data)
+
   const onSave = async () => {
 
     try {

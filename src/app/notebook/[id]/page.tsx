@@ -15,6 +15,39 @@ function EditNote() {
   const { user, isLoading } = useUser();
   const [content, setContent] = useState<any>('');
 
+  const updateContent = (newContent: string) => {
+    setContent(newContent);
+  };
+
+  useEffect(() => {
+    fetchEntryContent();
+  }, []);
+  
+  // const onSave = async () => {
+  //   try {
+  //     const response = await fetch("/api/notebookEntries?entryId=" + params.id, {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         id: params.id,
+  //         content: content.content
+  //       })
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error(`Error: ${response.status}`);
+  //     }
+  //   } catch (e) {
+  //     console.error("error here" + e);
+  //     return new Response(JSON.stringify({ error: "Unable to update entry" }), {
+  //       status: 500,
+  //     });
+  //   }
+  // };
+
+
+
   const fetchEntryContent = async () => {
     try {
       const response = await fetch("/api/notebookEntries?entryId=" + params.id, {
@@ -29,16 +62,17 @@ function EditNote() {
       console.log(response);
       const data = await response.json();
       setContent(data);
+
+      if(!data){
+        setContent('Add Content')
+      }
       
     } catch (error) {
       console.error("Failed to fetch entry content:", error);
     }
   };
 
-  useEffect(() => {
-    fetchEntryContent();
-  }, []);
-  
+
 
   return ( 
     <main className="">
@@ -64,9 +98,17 @@ function EditNote() {
           <div className="flex">
 
             <div className="absolute left-60 top-1 md:w-3/4 m-16 my-16">
-                <MyEditor entry={content}/>
+                <MyEditor entry={content} topicId={params.id}/>
+
+            
+                {/* <button  onClick={onSave} className="bg-buttonColor text-white px-4 py-2 rounded hover:bg-gray-400">
+                  Save
+                </button> */}
+
             </div>
+
           </div>
+
          
         </div>
       </div>

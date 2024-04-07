@@ -36,7 +36,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const { name, userId } = await request.json();
-    const newTopic = await prisma.topic.create({
+    const newTopic = await prisma.notebookEntry.create({
       data: {
         name,
         userId
@@ -60,16 +60,18 @@ export async function POST(request: Request) {
 }
 export async function PUT(request: Request) {
   try {
-    const { id, pinned } = await request.json();
-    const updatedTopic = await prisma.topic.update({
+    const { id, content } = await request.json();
+    const numId = parseInt(id, 10);
+    console.log(numId)
+    const updatedEntry = await prisma.notebookEntry.update({
       where: {
-        id: id,
+        id: numId,
       },
       data: {
-        pinned: pinned,
+        content: content,
       },
     });
-    return new Response(JSON.stringify(updatedTopic), {
+    return new Response(JSON.stringify(updatedEntry), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +79,7 @@ export async function PUT(request: Request) {
     });
   } catch (e) {
     console.error("error here" + e);
-    return new Response(JSON.stringify({ error: "Unable to update topic" }), {
+    return new Response(JSON.stringify({ error: "Unable to update entry" }), {
       status: 500,
     });
   }
