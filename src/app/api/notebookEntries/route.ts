@@ -84,3 +84,42 @@ export async function DELETE(request: Request) {
     });
   }
 }
+
+export async function POST(request: Request) {
+  try {
+    const formData = await request.formData();
+
+   
+    const title = formData.get("title") as string;
+    const topicId = Number(formData.get("topicId"));
+  
+
+    
+    const newNote = await prisma.notebookEntry.create({
+      data: {
+        pinned: false, 
+        title: title,
+        topicId: {
+          connect: {
+            id: topicId,
+          },
+        },
+      },
+    });
+
+    return new Response(JSON.stringify(newNote), {
+      status: 201,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (e) {
+    console.error("Error creating note: " + e);
+    return new Response(JSON.stringify({ error: "Unable to create note" }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+}
