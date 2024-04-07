@@ -96,7 +96,7 @@ function EditNote() {
           <SideMenu userId={user?.sub} menu={false} page="notebook" topic='notebook' contentFilter='' onContentFilterChange={() => { }}/>
           <div className="flex">
             <div className="absolute top-10 left-24 flex-col">
-              {/* <a className=" text-lg text-darkPlum"href={`/topic/${attachmentData?.topicId}`}>Back to Topic</a></div> */}
+              <div><a className=" text-lg text-darkPlum"href={`/topic/${content?.topicId}`}>Back to Topic</a></div>
               <button className="my-4 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => deleteNote(true)} ><p className='text-white'>Delete Note</p></button>
             </div>
            </div>

@@ -4,7 +4,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import TopicCard from './topic';
-import { Topic, Notebook} from '../types';
+import { Topic, NotebookEntry} from '../types';
 import AttachmentCard from './attachmentCard';
 import { TagsOnTopic } from '@prisma/client';
 import { useParams } from 'next/navigation'
@@ -13,12 +13,12 @@ import { useState, useEffect } from "react"
 //fetch the titles of all the notes in the notebook
 const Notebook = (topicId: any) => {
   const params = useParams();
-  const [notes, setNotes] = useState<Notebook | undefined>();
+  const [notes, setNotes] = useState<NotebookEntry[]>([]);
 
 //Fetch notes from Database based on topicId
-const fetchTopicData = async () => { console.log(topicId);
+const fetchTopicData = async () => {
   try {
-    const response = await fetch("/api/notes?topicId=" + params.id, {
+    const response = await fetch("/api/notebookEntries/notes?topicId=" + params.id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +49,7 @@ useEffect(() => {
 
 
       <div className='rounded-xl grid grid-cols-1  px-3  sm:w-full sm:px-0 sm:grid-cols-3 gap-2'>
-     {notes?.entries.map((entry)=> {
+     {notes?.map((entry)=> {
       return(
         <div className='bg-white rounded p-5' key={entry.id}>
           <a href={`/notebook/${entry.id}`}>{entry.title}</a>

@@ -8,7 +8,7 @@ import DeleteAttachmentModal from "../../components/deleteAttachmentModal";
 import { Attachment } from "../../types";
 
 
-\
+
 function Home() {
   const params = useParams();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);

@@ -99,7 +99,7 @@ export async function POST(request: Request) {
       data: {
         pinned: false, 
         title: title,
-        topicId: {
+        topic: {
           connect: {
             id: topicId,
           },

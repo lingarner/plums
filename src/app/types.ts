@@ -51,11 +51,6 @@ export interface NotebookEntry {
 }
 
 
-export interface Notebook {
-  id: number;
-  title: string;
-  topicId: number;
-  entries: NotebookEntry[];
-}
+
 
 

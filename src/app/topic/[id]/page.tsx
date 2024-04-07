@@ -105,7 +105,7 @@ function Home() {
       }
     ]);
   };
-  const addSubtopic = (name: string, description: string) => {
+  const addSubtopic = (id: number, name: string, description: string) => {
     setSubtopicData((prevTopics: Topic[]) => [
       ...prevTopics,
       { id: prevTopics.length + 1, name, description, pinned: false, parentId: null }
@@ -216,7 +216,7 @@ function Home() {
     fetchSubtopics();
    
     
-  }, [attachmentData.length]);
+  }, [params.id, attachmentData, urls]);
 
 
   
