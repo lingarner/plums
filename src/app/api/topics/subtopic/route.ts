@@ -34,12 +34,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const { name, parentId } = await request.json();
+    const { name, parentId, userId } = await request.json();
 
     const newTopic = await prisma.topic.create({
       data: {
         name,
         parentId: Number(parentId),
+        userId: userId,
       },
     });
     return new Response(JSON.stringify(newTopic), {
