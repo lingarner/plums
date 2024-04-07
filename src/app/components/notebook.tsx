@@ -47,10 +47,6 @@ useEffect(() => {
     <div >
       <h2 className="text-lg font-semibold text-darkPlum mb-4">Notebook</h2>
 
-      {/* button to add new note */}
-      <div>
-      <a className="my-10 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" >Add New Note</a>
-      </div>
 
       <div className='rounded-xl grid grid-cols-1  px-3  sm:w-full sm:px-0 sm:grid-cols-3 gap-2'>
      {notes?.entries.map((entry)=> {
