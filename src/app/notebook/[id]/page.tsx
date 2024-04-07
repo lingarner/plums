@@ -63,6 +63,7 @@ function EditNote() {
           throw new Error(`Error: ${response.status}`);
         }
         alert("Deleted successfully");
+        window.location.href = `/topic/47`;
       } catch (e) {
         console.error("error here" + e);
         return new Response(JSON.stringify({ error: "Unable to delete entry" }), {
