@@ -138,54 +138,47 @@ function Home() {
 
   useEffect(() => {
     fetchTopicData();
-  }, []);
+    fetchAttachmentData();
+    filterAttachments(attachmentData);
+    fetchUrlData();
+   
+    
+  }, [params.id, attachmentData, urls]);
+
   
-  const fetchSubtopics = async () => {
-    try {
-      const response = await fetch(`/api/topics/subtopic?parentId=${params.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+  useEffect(() => {
+    const fetchSubtopics = async () => {
+      try {
+        const response = await fetch(`/api/topics/subtopic?parentId=${params.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+  
+        // Transforming subtopics data into Topic array
+        const subtopicArray: Topic[] = data.map((subtopic: any) => ({
+          id: subtopic.id,
+          name: subtopic.name,
+          description: subtopic.description,
+          pinned: subtopic.pinned,
+          parentId: subtopic.parentId,
+        }));
+  
+        setSubtopicData(subtopicArray);
+      } catch (error) {
+        console.error("Failed to fetch subtopics:", error);
       }
-      const data = await response.json();
-
-      // Transforming subtopics data into Topic array
-      const subtopicArray: Topic[] = data.map((subtopic: any) => ({
-        id: subtopic.id,
-        name: subtopic.name,
-        description: subtopic.description,
-        pinned: subtopic.pinned,
-        parentId: subtopic.parentId,
-      }));
-
-      setSubtopicData(subtopicArray);
-    } catch (error) {
-      console.error("Failed to fetch subtopics:", error);
-    }
-  };
-  const fetchTopicData = async () => {
-    try {
-      const response = await fetch(`/api/topics/topic?topicId=${params.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data = await response.json();
-      setTopicData(data);
-      
-    } catch (error) {
-      console.error("Failed to fetch topics:", error);
-    }
-  };
-
+    };
+    fetchSubtopics();
+  }, [params.id, subtopicData]);
+  
+ 
+  
   useEffect(() => {
     
 
