@@ -209,7 +209,58 @@ function Home() {
     fetchSubtopics();
    
     
-  }, [params.id, attachmentData, urls]);
+  }, [attachmentData.length]);
+
+
+  
+  useEffect(() => {
+    const fetchSubtopics = async () => {
+      try {
+        const response = await fetch(`/api/topics/subtopic?parentId=${params.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+  
+        // Transforming subtopics data into Topic array
+        const subtopicArray: Topic[] = data.map((subtopic: any) => ({
+          id: subtopic.id,
+          name: subtopic.name,
+          description: subtopic.description,
+          pinned: subtopic.pinned,
+          parentId: subtopic.parentId,
+        }));
+  
+        setSubtopicData(subtopicArray);
+      } catch (error) {
+        console.error("Failed to fetch subtopics:", error);
+      }
+    };
+    fetchSubtopics();
+  }, [subtopicData]);
+  
+ 
+  
+  useEffect(() => {
+   
+    
+    if (!isLoading && !user) {
+    
+      window.location.href = "/";
+      
+    }
+    if (!isLoading && user) {
+      if (topicData && topicData.userId !== user.sub) {
+        window.location.href = "/";
+      }
+    }
+    
+  }, [isLoading, topicData]);
 
 
   return (

@@ -83,8 +83,10 @@ export default function SideMenu({ menu, userId, page, topic, contentFilter, onC
 
 
   useEffect(() => {
-    fetchTags();
-  });
+    if (topic) {
+      fetchTags();
+    }
+  }, [topic]);
   
 
   // Function to handle removing tags
