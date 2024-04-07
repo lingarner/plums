@@ -33,31 +33,6 @@ export async function GET(request: Request) {
 }
 
 
-export async function POST(request: Request) {
-  try {
-    const { name, userId } = await request.json();
-    const newTopic = await prisma.notebookEntry.create({
-      data: {
-        name,
-        userId
-      },
-    });
-    return new Response(JSON.stringify(newTopic), {
-      status: 201,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  } catch (e) {
-    console.error("error here" + e);
-    return new Response(JSON.stringify({ error: "Unable to create topic" }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
-}
 export async function PUT(request: Request) {
   try {
     const { id, content } = await request.json();
@@ -88,12 +63,12 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const { id } = await request.json();
-    const deletedTopic = await prisma.topic.delete({
+    const deletedEntry = await prisma.notebookEntry.delete({
       where: {
         id: id,
       },
     });
-    return new Response(JSON.stringify(deletedTopic), {
+    return new Response(JSON.stringify(deletedEntry), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -101,7 +76,7 @@ export async function DELETE(request: Request) {
     });
   } catch (e) {
     console.error("error here" + e);
-    return new Response(JSON.stringify({ error: "Unable to delete topic" }), {
+    return new Response(JSON.stringify({ error: "Unable to delete Entry" }), {
       status: 500,
       headers: {
         "Content-Type": "application/json",

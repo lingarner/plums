@@ -15,38 +15,10 @@ function EditNote() {
   const { user, isLoading } = useUser();
   const [content, setContent] = useState<any>('');
 
-  const updateContent = (newContent: string) => {
-    setContent(newContent);
-  };
-
   useEffect(() => {
     fetchEntryContent();
   }, []);
   
-  // const onSave = async () => {
-  //   try {
-  //     const response = await fetch("/api/notebookEntries?entryId=" + params.id, {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         id: params.id,
-  //         content: content.content
-  //       })
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error(`Error: ${response.status}`);
-  //     }
-  //   } catch (e) {
-  //     console.error("error here" + e);
-  //     return new Response(JSON.stringify({ error: "Unable to update entry" }), {
-  //       status: 500,
-  //     });
-  //   }
-  // };
-
-
 
   const fetchEntryContent = async () => {
     try {
@@ -73,6 +45,33 @@ function EditNote() {
   };
 
 
+  const deleteNote = async (deleted: boolean) => {
+    const entryId: string = params.id[0];
+    const entryIdNum = parseInt(entryId, 10);
+    if (deleted) {
+      try {
+        const response = await fetch("/api/notebookEntries?entryId=" + params.id, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: entryIdNum
+          })
+        });
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        alert("Deleted successfully");
+      } catch (e) {
+        console.error("error here" + e);
+        return new Response(JSON.stringify({ error: "Unable to delete entry" }), {
+          status: 500,
+        });
+      }
+    }
+  };
+
 
   return ( 
     <main className="">
@@ -94,6 +93,12 @@ function EditNote() {
       <div className="hidden sm:block">
         <div>
           <SideMenu userId={user?.sub} menu={false} page="notebook" topic='notebook' contentFilter='' onContentFilterChange={() => { }}/>
+          <div className="flex">
+            <div className="absolute top-10 left-24 flex-col">
+              {/* <a className=" text-lg text-darkPlum"href={`/topic/${attachmentData?.topicId}`}>Back to Topic</a></div> */}
+              <button className="my-4 bg-red-500 bg-opacity-80 border border-red-800 p-2 rounded" onClick={() => deleteNote(true)} ><p className='text-white'>Delete Note</p></button>
+            </div>
+           </div>
 
           <div className="flex">
 
@@ -101,10 +106,6 @@ function EditNote() {
                 <MyEditor entry={content} topicId={params.id}/>
 
             
-                {/* <button  onClick={onSave} className="bg-buttonColor text-white px-4 py-2 rounded hover:bg-gray-400">
-                  Save
-                </button> */}
-
             </div>
 
           </div>

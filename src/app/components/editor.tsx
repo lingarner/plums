@@ -50,6 +50,7 @@ useEffect(() => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
+      alert("Saved successfully");
     } catch (e) {
       console.error("error here" + e);
       return new Response(JSON.stringify({ error: "Unable to update entry" }), {
