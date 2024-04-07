@@ -8,7 +8,7 @@ import DeleteAttachmentModal from "../../components/deleteAttachmentModal";
 import { Attachment } from "../../types";
 
 
-
+\
 function Home() {
   const params = useParams();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -29,6 +29,8 @@ function Home() {
           throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
+
+
         setAttachmentData(data);
   
         // Set the initial value of comments from the fetched data
@@ -99,12 +101,14 @@ function Home() {
     }
   };
 
+  console.log(attachmentData)
   return (
     <main className="">
       {deleteModalOpen && attachmentData ? <DeleteAttachmentModal isOpen={deleteModalOpen} attachment={attachmentData} onClose={() => setDeleteModalOpen(false)}/> : <></>}
       <div className="sm:hidden">
         <>
           <HeaderMobile  userId={""} page ="attachment"/>
+
           <a href={`/topic/${attachmentData?.topicId}`}>Back to Topic</a>
           <div className="flex flex-col justify-center align-center">
           <h2 className="text-xl font-semibold text-darkPlum mb-2 border-b border-darkPlum">{attachmentData?.name}</h2>
